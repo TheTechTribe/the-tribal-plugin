@@ -109,13 +109,26 @@ class Dashboard
 			}
 
 			$this->updateSync($_POST);
-
-			$updateApiKey = $this->updateAPIKey($_POST);
-			if( $updateApiKey )
-			{
-				return $updateApiKey;
+			
+			$apiKeyDB	= WPOptions::get_instance()->apiKey(['action' => 'r']);
+			if( $apiKeyDB != $_POST['ttt_api_key']) {
+				$updateApiKey = $this->updateAPIKey($_POST);
+				if( $updateApiKey )
+				{
+					return $updateApiKey;
+				}
+			} else {
+				$settingsVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('settings');
+				$arrReturnMsg = [
+					'code' => 'success',
+					'msg-header' => $settingsVerbage['success']['header'],
+					'msg' => $settingsVerbage['success']['msg'],
+					'status' => 200,
+					'msg-content' => '',
+					'action' => false
+				];
 			}
-
+			
 			$forceImport = $this->forceImport($_POST);
 			if( $forceImport )
 			{
@@ -253,7 +266,10 @@ class Dashboard
 					$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 					$returnCode = (!$ret->data['success']) ? 'error':'';
 					tttSetKeyActive(0);
-				} else {
+				}
+
+				if(!isset($ret->data['code']) && !is_array($ret->data)){
+					$returnMsg = $ret->data;
 					tttSetKeyActive(1);
 				}
 				

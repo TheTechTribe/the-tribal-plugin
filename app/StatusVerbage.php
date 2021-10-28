@@ -47,7 +47,7 @@ class StatusVerbage
             'api' => [
                 'success' => [
                     'header' => 'WOOHOO - IT WORKED!',
-                    'msg' => 'Your Tech Tribe Plugin is now Activated and you can manage your Settings on the other tabs.'
+                    'msg' => 'Your Tech Tribe plugin is now Activated. Make sure you adjust your Settings below.'
                 ],
                 'error' => [
                     'header' => 'Error',
@@ -56,6 +56,12 @@ class StatusVerbage
                 'notverified' => [
                     'header' => 'Error',
                     'msg' => 'Error API Key.'
+                ]
+            ],
+            'settings' => [
+                'success' => [
+                    'header' => 'Success',
+                    'msg' => 'Updated Settings.'
                 ]
             ],
             'import' => [

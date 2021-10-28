@@ -14,7 +14,7 @@
                 </li>
                 <?php if(tttIsKeyActive()) : ?>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab" aria-controls="contact" aria-selected="false">Import</button>
+                    <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab" aria-controls="contact" aria-selected="false">Import Status</button>
                 </li>
                 <?php endif; ?>
             </ul>
@@ -25,13 +25,20 @@
                         <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#settings');?>" method="post" class="dashboard-form">
                             <div class="mb-3">
                                 <label class="form-label">API Key</label>
-                                <input type="input" class="form-control" name="ttt_api_key" value="<?php echo $apiKey;?>">
-                                <div id="apiHelp" class="form-text">
-                                    <?php if(!tttIsKeyActive()) : ?>
-                                        <p>STATUS: <span style="color:red;font-weight:bold;">Inactive</span> (Please grab your API key <a href="https://portal.thetechtribe.com/my-tribe-membership" target="_blank">from here</a>)</p>
-                                    <?php else: ?>
-                                        <p>STATUS: <span style="color:green;font-weight:bold;">Active</span> (You're good to go!)</p>
-                                    <?php endif; ?>
+                                <input type="password" class="form-control" name="ttt_api_key" value="<?php echo $apiKey;?>">
+                                <div id="apiHelp" class="ttt-form-text">
+                                    <div class="container-ttt-content">
+                                        <div class="row">
+                                            <div class="col-md-1">STATUS: </div>
+                                            <div class="col-md-11">
+                                                <?php if(!tttIsKeyActive()) : ?>
+                                                    <span style="color:red;font-weight:bold;">Inactive</span> (Please grab your API key <a href="https://portal.thetechtribe.com/my-tribe-membership" target="_blank">from here</a>)
+                                                <?php else: ?>
+                                                    <span style="color:green;font-weight:bold;">Active</span> (You're good to go!)
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -41,11 +48,21 @@
                                     <option value="manual" <?php echo ($publishPosts=='manual') ? 'selected':'';?>>Manual</option>
                                     <option value="auto" <?php echo ($publishPosts=='auto') ? 'selected':'';?>>Auto</option>
                                 </select>
-                                <div id="apiHelp" class="form-text">
-                                    <p>
-                                        AUTO = all Posts will be automatically set to go LIVE on their Schedule dates. No user-interaction required. <br>
-                                        MANUAL= all Posts will be marked as DRAFTS ready for you to tweak before marking LIVE. User-interaction required.
-                                    </p>
+                                <div id="apiHelp" class="ttt-form-text">
+                                    <div class="container-ttt-content">
+                                        <div class="row">
+                                            <div class="col-md-1">AUTO: </div>
+                                            <div class="col-md-11">
+                                                All Posts will be automatically set to go LIVE on their Schedule dates. No user-interaction required
+                                            </div>
+                                        </div>
+                                         <div class="row">
+                                            <div class="col-md-1">MANUAL: </div>
+                                            <div class="col-md-11">
+                                                All Posts will be marked as DRAFTS ready for you to tweak before marking LIVE. User-interaction required.
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -58,8 +75,10 @@
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <div id="apiHelp" class="form-text">
-                                    <p>Choose the default Author you want all the automatically imported posts to be assigned against.</p>
+                                <div id="apiHelp" class="ttt-form-text">
+                                    <div class="container-ttt-content">
+                                        Choose the default Author you want all the automatically imported posts to be assigned against.
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -74,12 +93,28 @@
                     
                     <div class="wrap">
                         <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#import');?>" method="post" class="dashboard-form-import">
-                            
-                                <div class="mb-3">
-                                    <p>Manual Import</p>
-                                    <p>Last Check : <?php echo $lastChecked;?></p>
-                                    <p>Last Download : <?php echo $lastDownload;?></p>
+
+                            <p>Your server will automatically check for new Blog Posts approximately every 24 hours. If you want to run a Manual Import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
+                            <?php
+                            //echo date_i18n('F d, Y h:i A', 1635495073).'<br>';
+                                $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
+                            ?>
+                            <div id="apiHelp" class="ttt-form-text">
+                                <div class="container-ttt-content">
+                                    <div class="row">
+                                        <div class="col-md-3">Last Check: </div>
+                                        <div class="col-md-8"><?php echo ($lastChecked && !empty($lastChecked)) ? date('d F Y h:i A', strtotime($lastChecked)) : '';?> </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">Next Schedule Check: </div>
+                                        <div class="col-md-8"><?php echo ($nextSchedule) ? date('d F Y h:i A', tttGetNextCronTime('ttt_user_cron_exec')) : '';?> </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">Last Successfull Import: </div>
+                                        <div class="col-md-8"><?php echo ($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?> </div>
+                                    </div>
                                 </div>
+                            </div>
                             
                             <input type="hidden" name="action" value="ttt_force_import">
                             <?php wp_nonce_field( 'ttt_client_update_plugin_' . get_current_user_id() ); ?>

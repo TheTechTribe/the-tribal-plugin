@@ -63,6 +63,7 @@ class Authenticate
 					'user_api_key'		=> $apiKey,
 				],
 			]);
+
 			$resCode = wp_remote_retrieve_response_code($response);
 			$resBody = wp_remote_retrieve_body($response);
 			$toArrayBody = json_decode($resBody, 1);

@@ -86,37 +86,35 @@ class ImportPost
             $publishPostSetting = WPOptions::get_instance()->publishPosts();
             
             $postStatus = 'draft';
-            if( $publishPostSetting != '-1') {
-                if( $publishPostSetting == 'auto' ) {
-                    $postStatus = 'publish';
-                }
-            }
-
+            
             $postData = [];
             $post_id = 0;
             
             foreach($dataPost as $post) {
                 if( ! post_exists($post['title']) ) {
                     //insert post
-                    $post_date = date( 'Y-m-d H:i:s');
-                    $post_date_gmt = date( 'Y-m-d H:i:s');
+                    $post_date = date( 'Y-m-d H:i:s' );
+                    $post_date_schedule = date( 'Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
                     if( $post['meta']['date_schedule'] != '' ) {
-                        $post_date_gmt = date('Y-m-d H:i:s', strtotime($post['meta']['date_schedule']));
+                        $post_date_schedule = date('Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
                         if( $post['meta']['date_schedule'] > $post_date) {
-                            $postStatus = 'future';
+                            $postStatus = 'draft';
+                            //$postStatus = 'future';
                         }
                     }
                     
                     $content = str_replace($blogUrl, site_url(), $post['content']);
-                                       
+                    
+                    if( $publishPostSetting == 'auto' ) {
+                        $postStatus = 'publish';
+                    }
+                    
                     $postData = [
                         'post_title'        => $post['title'],
                         'post_content'      => $content,
                         'post_status'       => $postStatus,
-                        'post_date'         => $post_date_gmt, 
-                        'post_date_gmt'     => $post_date_gmt, 
-                        'post_modified'     => $post_date,
-                        'post_modified_gmt' => $post_date,
+                        'post_date'         => $post_date_schedule, 
+                        'post_date_gmt'     => $post_date_schedule, 
                         'post_author'       => $currentUserId,
                     ];
                     
@@ -124,6 +122,14 @@ class ImportPost
                     //insert post
 
                     if($post_id) {
+
+                        $argUpdate = [
+                            'ID'            => $post_id,
+                            'post_modified'     => date( 'Y-m-d H:i' ),
+                            'post_modified_gmt' => date( 'Y-m-d H:i' ),
+                        ];
+                        wp_update_post( $argUpdate );
+
                         $ret['summary']['post'][$post_id]['id'] = $post_id;
                         $ret['summary']['post'][$post_id]['title'] = $post['title'];
                         

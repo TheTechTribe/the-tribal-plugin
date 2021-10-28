@@ -46,7 +46,7 @@ function activate_the_tech_tribe_client() {
 	The_Tech_Tribe_Client_Activator::activate();
 
 	if ( ! wp_next_scheduled( 'ttt_user_cron_hook' ) ) {
-		wp_schedule_event( time(), 'ttt_every_four_hours', 'ttt_user_cron_exec' );
+		wp_schedule_event( time(), 'daily', 'ttt_user_cron_exec' );
 	}
 }
 
@@ -135,6 +135,7 @@ function ttt_blog_cron_intervals($schedules) {
         'interval' => 14400,
         'display' => __('Every 4 Hours')
     );
+	
     $schedules['ttt_every_six_hours'] = array(
         'interval' => 21600,
         'display' => __('Every 6 Hours')
@@ -144,7 +145,7 @@ function ttt_blog_cron_intervals($schedules) {
     
 	return $schedules;
 }
-add_filter( 'cron_schedules', 'ttt_blog_cron_intervals');
+//add_filter( 'cron_schedules', 'ttt_blog_cron_intervals');
 
 function ttt_user_cron_exec()
 {
