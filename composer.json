@@ -1,0 +1,21 @@
+{
+    "name": "nigelmoore/the-tech-tribe",
+    "description": "The Tech Tribe Client",
+    "autoload": {
+        "psr-4": {
+            "TheTechTribeClient\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\":"tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Allan",
+            "email": "allan@thetechtribe.com"
+        }
+    ],
+    "require": {}
+}
