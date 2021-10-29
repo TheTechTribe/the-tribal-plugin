@@ -68,7 +68,7 @@ class ImportPost
         //insert the post
         $post = new Post;
         $getPost = $post->get($args);
-       
+
         if( 
             $getPost->status == 200 
             && isset($getPost->data['success'])
@@ -104,6 +104,11 @@ class ImportPost
                     }
                     
                     $content = str_replace($blogUrl, site_url(), $post['content']);
+                    //end of line attribute
+                    $content .= '<p>';
+                    $content .= '<p>';
+                    $content .= '<p>';
+                    $content .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission</p>';
                     
                     if( $publishPostSetting == 'auto' ) {
                         $postStatus = 'publish';

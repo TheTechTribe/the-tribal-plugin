@@ -16,7 +16,7 @@
  * Plugin Name:       The Tribal Plugin
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
- * Version:           0.0.8
+ * Version:           0.8.1
  * Author:            The Tech Tribe
  * Author URI:        thetechtribe.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.0.8' );
+define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.8.1' );
 
 date_default_timezone_set(get_option('timezone_string'));
 
@@ -131,23 +131,6 @@ function ttt_init_client()
 	}
 }
 add_action('init', 'ttt_init_client');
-
-function ttt_blog_cron_intervals($schedules) {
-    $schedules['ttt_every_four_hours'] = array(
-        'interval' => 14400,
-        'display' => __('Every 4 Hours')
-    );
-	
-    $schedules['ttt_every_six_hours'] = array(
-        'interval' => 21600,
-        'display' => __('Every 6 Hours')
-    );
-	
-	$schedules[ 'every-5-minutes' ] = array( 'interval' => 5 * MINUTE_IN_SECONDS, 'display' => __( 'Every 5 minutes' ) );
-    
-	return $schedules;
-}
-//add_filter( 'cron_schedules', 'ttt_blog_cron_intervals');
 
 function ttt_user_cron_exec()
 {
