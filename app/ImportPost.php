@@ -108,8 +108,8 @@ class ImportPost
                     $content .= '<p>';
                     $content .= '<p>';
                     $content .= '<p>';
-                    $content .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission</p>';
-                    
+                    $content .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission.</p>';
+
                     if( $publishPostSetting == 'auto' ) {
                         $postStatus = 'publish';
                     }
