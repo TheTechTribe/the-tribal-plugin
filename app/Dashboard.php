@@ -114,25 +114,6 @@ class Dashboard
 			{
 				return $updateApiKey;
 			}
-
-			// $apiKeyDB	= WPOptions::get_instance()->apiKey(['action' => 'r']);
-			// if( $apiKeyDB != $_POST['ttt_api_key']) {
-			// 	$updateApiKey = $this->updateAPIKey($_POST);
-			// 	if( $updateApiKey )
-			// 	{
-			// 		return $updateApiKey;
-			// 	}
-			// } else {
-			// 	$settingsVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('settings');
-			// 	$arrReturnMsg = [
-			// 		'code' => 'success',
-			// 		'msg-header' => $settingsVerbage['success']['header'],
-			// 		'msg' => $settingsVerbage['success']['msg'],
-			// 		'status' => 200,
-			// 		'msg-content' => '',
-			// 		'action' => false
-			// 	];
-			// }
 			
 			$forceImport = $this->forceImport($_POST);
 			if( $forceImport )
