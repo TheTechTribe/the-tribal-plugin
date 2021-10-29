@@ -270,6 +270,10 @@ class Dashboard
 
 				if(!isset($ret->data['code']) && !is_array($ret->data)){
 					$returnMsg = $ret->data;
+					tttSetKeyActive(0);
+				}
+
+				if(isset($ret->data['code']) && $ret->data['success']) {
 					tttSetKeyActive(1);
 				}
 				
@@ -285,7 +289,7 @@ class Dashboard
 					'action' => 'u',
 					'value' => $returnCode . ' : ' . $returnMsg
 				]);
-		
+				
 				return $arrReturnMsg;
 			}
 		}
