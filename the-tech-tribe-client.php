@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              thetechtribe.com
- * @since             1.0.0
+ * @since             0.0.8
  * @package           The_Tech_Tribe_Client
  *
  * @wordpress-plugin
  * Plugin Name:       The Tribal Plugin
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
- * Version:           1.0.0
+ * Version:           0.0.8
  * Author:            The Tech Tribe
  * Author URI:        thetechtribe.com
  * License:           GPL-2.0+
@@ -35,7 +35,9 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TECH_TRIBE_CLIENT_VERSION', '1.0.0' );
+define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.0.8' );
+
+date_default_timezone_set(get_option('timezone_string'));
 
 /**
  * The code that runs during plugin activation.

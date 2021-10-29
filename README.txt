@@ -67,20 +67,27 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 0.0.8 =
+* Fix the next schedule display.
+* Update the text label in date Import status tab.
+* Fix the settings update, if publish post and author only changed then update that changes only.
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 0.0.5 =
+* Update status verbage when success.
+
+= 0.0.4 =
+* Add next schedule cron to be display.
+
+= 0.0.3 =
+* Updated the UI to make it just two tabs, settings and import manual.
+
+= 0.0.2 =
+* Created the UI page settings.
+
+= 0.0.1 =
+* Bootstrap Build of the plugin.
 
 == Upgrade Notice ==
-
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
 
 == Arbitrary section ==
 

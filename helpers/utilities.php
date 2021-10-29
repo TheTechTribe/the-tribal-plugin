@@ -64,10 +64,13 @@ if(!function_exists('tttSetKeyActive')){
 }
 
 function tttGetNextCronTime( $cron_name ){
-    foreach( _get_cron_array() as $timestamp => $crons ){
+	$getCron = _get_cron_array();
+	
+	$timeStamp = [];
+    foreach( $getCron as $timestamp => $crons ){
         if( in_array( $cron_name, array_keys( $crons ) ) ){
-            return $timestamp;
+            $timeStamp[] = $timestamp;
         }
     }
-    return false;
+	return end($timeStamp);
 }

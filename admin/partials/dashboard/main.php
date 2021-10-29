@@ -96,7 +96,8 @@
 
                             <p>Your server will automatically check for new Blog Posts approximately every 24 hours. If you want to run a Manual Import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
                             <?php
-                            //echo date_i18n('F d, Y h:i A', 1635495073).'<br>';
+								//date_default_timezone_set(get_option('timezone_string'));
+                            	//echo date_i18n('F d, Y h:i A', 1635495073).'<br>';
                                 $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
                             ?>
                             <div id="apiHelp" class="ttt-form-text">
@@ -107,7 +108,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">Next Schedule Check: </div>
-                                        <div class="col-md-8"><?php echo ($nextSchedule) ? date('d F Y h:i A', tttGetNextCronTime('ttt_user_cron_exec')) : '';?> </div>
+                                        <div class="col-md-8"><?php echo ($nextSchedule) ? date('d F Y h:i A', $nextSchedule) : '';?> </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">Last Successfull Import: </div>
