@@ -55,12 +55,9 @@ class ImportPost
         ];
         
         tttResetDownloadStatusStartEnd();
-
-        HealthStatus::get_instance()->importJobStart([
-            'action' => 'u',
-            'value' => date('Y/m/d H:i:s') . ' : Start'
-        ]);
-
+        
+        tttStartImport();
+ 
         $countSuccess = 0;
 
         $currentUserId = WPOptions::get_instance()->defaultAuthor();
@@ -203,10 +200,7 @@ class ImportPost
             $ret['code'] = 'success';
             $ret['post_count_imported'] = $countSuccess;
 
-            HealthStatus::get_instance()->lastDownload([
-                'action' => 'u',
-                'value' => date('Y/m/d H:i:s')
-            ]);
+            tttLastDownload();
         }
 
         if(!empty($ret['summary']['exists']['post']) && count($ret['summary']['exists']['post']) > 0) {
@@ -217,25 +211,13 @@ class ImportPost
             $ret['post_count_imported'] = $countSuccess;
         }
 
-        HealthStatus::get_instance()->lastChecked([
-            'action' => 'u',
-            'value' => date('Y/m/d H:i:s')
-        ]);
+        tttLastChecked();
+        
+        tttLastCheckedStatus($ret['code'], $ret['msg']);
+        
+        tttEndImport();
 
-        HealthStatus::get_instance()->lastCheckedStatus([
-            'action' => 'u',
-            'value' => date('Y/m/d H:i:s') .' : '. $ret['code'] . ' : ' . $ret['msg']
-        ]);
-
-        HealthStatus::get_instance()->importJobEnd([
-            'action' => 'u',
-            'value' => date('Y/m/d H:i:s') . ' : End'
-        ]);
-
-        HealthStatus::get_instance()->importLogReturnPost([
-            'action' => 'u',
-            'value' => $ret
-        ]);
+        tttLogReturn($ret);
 
         return rest_ensure_response($ret);
     }

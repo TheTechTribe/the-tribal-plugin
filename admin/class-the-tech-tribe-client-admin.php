@@ -102,4 +102,9 @@ class The_Tech_Tribe_Client_Admin {
 
 	}
 
+	public function cron_jobs()
+	{
+		\TheTechTribeClient\CronJobs::get_instance()->init();
+	}
+
 }

@@ -48,8 +48,48 @@
 		});
 	}
 
+	var ajaxImportPost = function() {
+		function ajaxImportWithoutRealTimeProgress()
+		{
+			$('.dashboard-form-import').on('submit', function(e){
+				e.preventDefault();
+				let msg = 'Start import please wait...';
+				$( ".import-ajax-status .msg" ).html( msg );
+	
+				console.log('import');
+				var data = {
+					'action' : 'ttt_import_post'
+				};
+				var request = $.ajax({
+					url: ajaxurl,
+					method: "POST",
+					data: data,
+					dataType: "json"
+				});
+				
+				request.done(function( msg ) {
+					msg = '';
+					$( ".import-ajax-status .msg" ).html( msg );
+					$( ".import-ajax-status .msg" ).hide();
+				});
+				
+				request.fail(function( jqXHR, textStatus ) {
+					msg = "Request failed: " + textStatus;
+					$( ".import-ajax-status .msg" ).html( msg );
+					$( ".import-ajax-status .msg" ).hide();
+				});
+			});
+		}
+		return {
+			initWithoutRealTimeProgress: function(){
+				ajaxImportWithoutRealTimeProgress();
+			}//init: function()
+		};
+	}();
+
 	$(function(){
 		initUpdateTabHashLink();
+		initWithoutRealTimeProgress.init();
 	});
 
 })( jQuery );

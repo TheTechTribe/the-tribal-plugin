@@ -116,7 +116,7 @@ class Dashboard
 			// }
 
 			$apiKeyDB	= WPOptions::get_instance()->apiKey(['action' => 'r']);
-			if( $apiKeyDB != $_POST['ttt_api_key']) {
+			if( isset($_POST['ttt_api_key']) && $apiKeyDB != $_POST['ttt_api_key']) {
 				$updateApiKey = $this->updateAPIKey($_POST);
 				if( $updateApiKey )
 				{
@@ -149,10 +149,7 @@ class Dashboard
 		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_force_import' ){
 			$arrReturnMsg['action'] = true;
 
-			HealthStatus::get_instance()->importJobVia([
-				'action' => 'u',
-				'value' => date('Y/m/d H:i:s') . ' : Manual Import'
-			]);
+			tttImportJobVia('Manual Import');
 
 			$userAccountKeys = \TheTechTribeClient\User::get_instance()->getAccountKeys();
 			$userAccountKeys['date_import_blog'] = \TheTechTribeClient\WPOptions::get_instance()->dateImportBlog();
@@ -165,6 +162,7 @@ class Dashboard
 			
 			$returnCode = $ret->data['code'];
 			$returnMsg = $ret->data['msg'];
+			$returnMsgHeader = $ret->data['msg-header'] ?? '';
 			$msgContent = '';
 
 			if(isset($ret->data['code']) && ! $ret->data['success']) {
@@ -191,6 +189,7 @@ class Dashboard
 
 			$arrReturnMsg = [
 				'code' 		=> $returnCode,
+				'msg-header' => $returnMsgHeader,
 				'msg' 		=> $returnMsg,
 				'status' 	=> $ret->status,
 				'msg-content' => $msgContent,
@@ -271,15 +270,18 @@ class Dashboard
 					$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 					$returnCode = (!$ret->data['success']) ? 'error':'';
 					tttSetKeyActive(0);
+					tttRemoveCronJob();
 				}
 
 				if(!isset($ret->data['code']) && !is_array($ret->data)){
 					$returnMsg = $ret->data;
 					tttSetKeyActive(0);
+					tttRemoveCronJob();
 				}
 
 				if(isset($ret->data['code']) && $ret->data['success']) {
 					tttSetKeyActive(1);
+					tttInitCronJob();
 				}
 				
 				$arrReturnMsg = [
@@ -290,10 +292,7 @@ class Dashboard
 					'action' 	=> true
 				];
 
-				HealthStatus::get_instance()->verifyChecked([
-					'action' => 'u',
-					'value' => $returnCode . ' : ' . $returnMsg
-				]);
+				tttVerifyChecked($returnCode, $returnMsg);
 				
 				return $arrReturnMsg;
 			}

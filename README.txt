@@ -67,6 +67,11 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 == Changelog ==
 
+= 0.9.1 =
+* Update notification message when no blogs to import.
+* Added progress status when importing blogs.
+* Improve activating and deactivating cron jobs, set cron jobs only if the status is active and remove if not.
+
 = 0.8.1 =
 * Add end line attribute on each of the end of content.
 

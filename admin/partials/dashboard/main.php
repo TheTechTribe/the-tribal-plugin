@@ -96,8 +96,6 @@
 
                             <p>Your server will automatically check for new Blog Posts approximately every 24 hours. If you want to run a Manual Import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
                             <?php
-								//date_default_timezone_set(get_option('timezone_string'));
-                            	//echo date_i18n('F d, Y h:i A', 1635495073).'<br>';
                                 $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
                             ?>
                             <div id="apiHelp" class="ttt-form-text">
@@ -114,6 +112,11 @@
                                         <div class="col-md-3">Last Successfull Import: </div>
                                         <div class="col-md-8"><?php echo ($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?> </div>
                                     </div>
+
+                                    <div class="import-ajax-status">
+                                        <p class="msg"></p>
+                                    </div>
+
                                 </div>
                             </div>
                             

@@ -1,15 +1,7 @@
 <?php
 namespace TheTechTribeClient;
 
-use TheTechTribeClient\APIPortal;
-use WP_Error;
-use WP_REST_Response;
-use User;
-
-/**
- * Cron Jobs
- */
-class CronJobs
+class AjaxImportPost
 {
     /**
 	 * instance of this class
@@ -48,13 +40,15 @@ class CronJobs
 
     public function init()
     {
-        $this->scheduleSyncBlog();
+        add_action('wp_ajax_ttt_import_post', [$this, 'import']);
+        //add_action('wp_ajax_ttt_import_post', [$this, 'import']);
     }
 
-    public function scheduleSyncBlog()
+    public function import()
     {
-		tttImportJobVia('Cron Jobs');
-        return \TheTechTribeClient\ImportPost::get_instance()->import();
+        for ($i=0; $i <= 3; $i++) {
+            sleep(1);
+        }
     }
-    
+
 }

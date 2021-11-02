@@ -156,6 +156,7 @@ class The_Tech_Tribe_Client {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'ttt_user_cron_hook', $plugin_admin, 'cron_jobs' );
 
 	}
 

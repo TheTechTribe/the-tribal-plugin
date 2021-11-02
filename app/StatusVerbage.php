@@ -74,8 +74,8 @@ class StatusVerbage
                     'msg' => 'Un-Successfully imported blog(s).'
                 ],
                 'nothing' => [
-                    'header' => 'Success',
-                    'msg' => 'Nothing to import blog(s).'
+                    'header' => 'CHECK SUCCESSFUL',
+                    'msg' => 'There were no available blogs to import. We release new posts monthly and your plugin will automatically check for these every 24 hours.'
                 ],
                 'imported' => [
                     'header' => 'Success',

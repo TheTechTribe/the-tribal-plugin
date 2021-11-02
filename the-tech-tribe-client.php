@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              thetechtribe.com
- * @since             0.0.8
+ * @since             0.0.1
  * @package           The_Tech_Tribe_Client
  *
  * @wordpress-plugin
  * Plugin Name:       The Tribal Plugin
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
- * Version:           0.8.1
+ * Version:           0.9.1
  * Author:            The Tech Tribe
  * Author URI:        thetechtribe.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.8.1' );
+define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.9.1' );
 
 date_default_timezone_set(get_option('timezone_string'));
 
@@ -46,10 +46,6 @@ date_default_timezone_set(get_option('timezone_string'));
 function activate_the_tech_tribe_client() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client-activator.php';
 	The_Tech_Tribe_Client_Activator::activate();
-
-	if ( ! wp_next_scheduled( 'ttt_user_cron_hook' ) ) {
-		wp_schedule_event( time(), 'daily', 'ttt_user_cron_exec' );
-	}
 }
 
 /**
@@ -60,10 +56,7 @@ function deactivate_the_tech_tribe_client() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client-deactivator.php';
 	The_Tech_Tribe_Client_Deactivator::deactivate();
 
-	$timestamp = wp_next_scheduled( 'ttt_user_cron_hook' );
-    wp_unschedule_event( $timestamp, 'ttt_user_cron_hook' );
-
-	wp_clear_scheduled_hook( 'ttt_user_cron_hook' );
+	tttRemoveCronJob();
 }
 
 register_activation_hook( __FILE__, 'activate_the_tech_tribe_client' );
@@ -120,6 +113,7 @@ function run_the_tech_tribe_client() {
 	$plugin->run();
 	
 	\TheTechTribeClient\WPMenu::get_instance()->init();
+	\TheTechTribeClient\AjaxImportPost::get_instance()->init();
 }
 add_action('plugins_loaded', 'run_the_tech_tribe_client');
 
@@ -131,9 +125,3 @@ function ttt_init_client()
 	}
 }
 add_action('init', 'ttt_init_client');
-
-function ttt_user_cron_exec()
-{
-	\TheTechTribeClient\CronJobs::get_instance()->init();
-}
-add_action( 'ttt_user_cron_hook', 'ttt_user_cron_exec' );
