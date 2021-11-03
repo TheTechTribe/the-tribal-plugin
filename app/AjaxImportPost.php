@@ -74,14 +74,25 @@ class AjaxImportPost
 			$msgContent .= '</ul>';
 		}
 
+		$getLastCheck = \TheTechTribeClient\HealthStatus::get_instance()->lastChecked([
+			'action' => 'r',
+		]);
+		
+		$getLastImport = \TheTechTribeClient\HealthStatus::get_instance()->lastDownload([
+			'action' => 'r',
+		]);
+
 		$arrReturnMsg = [
-			'code' 		=> $returnCode,
-			'msg_header' => $returnMsgHeader,
-			'msg' 		=> $returnMsg,
-			'status' 	=> $ret->status,
-			'msg_content' => $msgContent,
-			'action' 	=> true
+			'code' 						=> $returnCode,
+			'msg_header' 				=> $returnMsgHeader,
+			'msg' 						=> $returnMsg,
+			'status' 					=> $ret->status,
+			'msg_content' 				=> $msgContent,
+			'action' 					=> true,
+			'last_check' 				=> date('d F Y h:i A', strtotime($getLastCheck)),
+			'last_successfull_import' 	=> date('d F Y h:i A', strtotime($getLastImport))
 		];
+
 		wp_send_json_error($arrReturnMsg);
     }
 

@@ -135,6 +135,15 @@
 					console.log(msg);
 					toggleAlertHTML(true, ajaxShowAlert(msg));
 					toggleAjaxStatusHTML(false);
+					
+					if(msg.data.last_check !== 'undefined' || msg.data.last_check !== null){
+						$('.last-check').text(msg.data.last_check)
+					}
+					
+					if(msg.data.last_successfull_import !== 'undefined' || msg.data.last_successfull_import !== null){
+						$('.last-success-import').text(msg.data.last_successfull_import)
+					}
+					
 					$(".btn-import").prop('disabled', false);
 				});
 				
