@@ -53,18 +53,24 @@ class Post
 		$ret = '';
 		$apiKey = WPOptions::get_instance()->apiKey();
 		if($apiKey != '') {
-			$defaults = \TheTechTribeClient\User::get_instance()->getAccountKeys();
-        
-			$args = wp_parse_args( $args, $defaults );
+			
+			//move this to function
+			$userAccountKeys = \TheTechTribeClient\User::get_instance()->getAccountKeys();
+			$userAccountKeys['date_import_blog'] = \TheTechTribeClient\WPOptions::get_instance()->dateImportBlog();
+			
+			$postBodyArgs = [
+				'body' => $userAccountKeys
+			];
+			//move this to function
 
 			$urlAPIPortal = new APIPortal();
 			$url = $urlAPIPortal->url() . 'post/get';
-			
+
 			$response = wp_remote_post( $url, [
 				'timeout'   => 45,
-				'body'		=> $args['body']
+				'body'		=> $postBodyArgs['body']
 			]);
-			
+
 			$resCode = wp_remote_retrieve_response_code($response);
 			$resBody = wp_remote_retrieve_body($response);
 			$toArrayBody = json_decode($resBody, 1);

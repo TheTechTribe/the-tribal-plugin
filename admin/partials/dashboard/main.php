@@ -2,12 +2,15 @@
     <div class="bootstrap-iso">
         <h1>The Tribal Plugin</h1>
         <div class="form form-dashboard-user col-md-8">
-            <?php 
-                if($retUpdate) {
-                    \TheTechTribeClient\ShowAlert::get_instance()->show($alertArgs); 
-                }
-            ?>
-                        
+           
+            <div class="dashboard-alert">
+                <?php 
+                    if($retUpdate) {
+                        \TheTechTribeClient\ShowAlert::get_instance()->show($alertArgs); 
+                    }
+                ?>
+            </div>
+
             <ul class="nav nav-tabs" id="tttUserDashboard" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="home" aria-selected="true">Settings</button>
@@ -113,16 +116,14 @@
                                         <div class="col-md-8"><?php echo ($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?> </div>
                                     </div>
 
-                                    <div class="import-ajax-status">
-                                        <p class="msg"></p>
-                                    </div>
+                                    <div class="import-ajax-status"></div>
 
                                 </div>
                             </div>
                             
                             <input type="hidden" name="action" value="ttt_force_import">
                             <?php wp_nonce_field( 'ttt_client_update_plugin_' . get_current_user_id() ); ?>
-                            <button type="submit" class="btn btn-primary">START MANUAL IMPORT</button>
+                            <button type="submit" class="btn btn-primary btn-import">START MANUAL IMPORT</button>
                         </form> 
                     </div>
                 </div>

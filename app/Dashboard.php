@@ -151,14 +151,7 @@ class Dashboard
 
 			tttImportJobVia('Manual Import');
 
-			$userAccountKeys = \TheTechTribeClient\User::get_instance()->getAccountKeys();
-			$userAccountKeys['date_import_blog'] = \TheTechTribeClient\WPOptions::get_instance()->dateImportBlog();
-			
-			$postBodyArgs = [
-				'body' => $userAccountKeys
-			];
-
-			$ret = \TheTechTribeClient\ImportPost::get_instance()->import($postBodyArgs);
+			$ret = \TheTechTribeClient\ImportPost::get_instance()->import();
 			
 			$returnCode = $ret->data['code'];
 			$returnMsg = $ret->data['msg'];

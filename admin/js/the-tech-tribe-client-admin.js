@@ -36,7 +36,8 @@
 		} 
 		
 		$('#tttUserDashboard button').on('shown.bs.tab', function (event) {
-			console.log(event);
+			toggleAlertHTML();
+
 			var getId = $(event.target).data('bs-target');
 
 			if(history.pushState) {
@@ -48,35 +49,98 @@
 		});
 	}
 
+	function ajaxShowAlert(dataArray)
+	{
+		var retData = dataArray;
+
+		var retCode = retData.data.code;
+		if(retCode == '' || retCode == 'rest_no_route'){
+			retCode = 'danger';
+		}
+		var retMsgHeader = retData.data.msg_header;
+
+		var retMsg = retData.data.msg;
+		if(retMsg == '' || retMsg === null || retMsg === 'undefined'){
+			retMsg = 'Something is wrong';
+		}
+
+		var retMsgContent = retData.data.msg_content;
+
+		let msgHtml = '<div class="alert alert-'+retCode+' alert-dismissible fade show" role="alert">'
+			+ '<h4 class="alert-heading ttt-show-alert-error-code">'+retMsgHeader+'</h4>'
+			+ '<div class="msg-content">'+retMsg + retMsgContent+'</div>'
+			+ '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+		+ '</div>';
+
+		return msgHtml;
+	}
+
+	function toggleAlertHTML()
+	{
+		var alertNode = document.querySelector('.alert')
+		var alert = bootstrap.Alert.getInstance(alertNode)
+		alert.close()
+	}
+
+	function toggleAjaxStatusHTML(enable = false, msg = '')
+	{
+		$(".import-ajax-status").html(msg);
+
+		if(enable)
+		{
+			$(".import-ajax-status").show();
+		} else {
+			$(".import-ajax-status").hide();
+		}
+	}
+	
+	function toggleAlertHTML(enable = false, msg = '')
+	{
+		$(".dashboard-alert").html(msg);
+
+		if(enable)
+		{
+			$(".dashboard-alert").show();
+		} else {
+			$(".dashboard-alert").hide();
+		}
+	}
+
 	var ajaxImportPost = function() {
 		function ajaxImportWithoutRealTimeProgress()
 		{
 			$('.dashboard-form-import').on('submit', function(e){
 				e.preventDefault();
-				let msg = 'Start import please wait...';
-				$( ".import-ajax-status .msg" ).html( msg );
-	
-				console.log('import');
+				
+				let msg = '<div class="ajax-loader"><p>Please wait, this might take up to 60 seconds...</p> ';
+				msg += '<p><img src="'+ttt_admin_ajax_object.plugin_url+'/assets/images/ajax-loader.gif"></p>';
+				msg += '<p></p></div>';
+
+				toggleAjaxStatusHTML(true, msg);
+				$(".btn-import").prop('disabled', true);
+				
 				var data = {
 					'action' : 'ttt_import_post'
 				};
 				var request = $.ajax({
-					url: ajaxurl,
+					url: ttt_admin_ajax_object.ajax_url,
 					method: "POST",
 					data: data,
 					dataType: "json"
 				});
 				
 				request.done(function( msg ) {
-					msg = '';
-					$( ".import-ajax-status .msg" ).html( msg );
-					$( ".import-ajax-status .msg" ).hide();
+					console.log(msg);
+					toggleAlertHTML(true, ajaxShowAlert(msg));
+					toggleAjaxStatusHTML(false);
+					$(".btn-import").prop('disabled', false);
 				});
 				
 				request.fail(function( jqXHR, textStatus ) {
-					msg = "Request failed: " + textStatus;
-					$( ".import-ajax-status .msg" ).html( msg );
-					$( ".import-ajax-status .msg" ).hide();
+					console.log(textStatus);
+					msg = "<h4>Request failed: " + textStatus+"</h4>";
+					toggleAjaxStatusHTML(true, msg);
+					$(".btn-import").prop('disabled', false);
 				});
 			});
 		}
@@ -89,7 +153,7 @@
 
 	$(function(){
 		initUpdateTabHashLink();
-		initWithoutRealTimeProgress.init();
+		ajaxImportPost.initWithoutRealTimeProgress();
 	});
 
 })( jQuery );

@@ -99,7 +99,12 @@ class The_Tech_Tribe_Client_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tech-tribe-client-admin.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name . 'bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/js/bootstrap-v5-.bundle.min.js', array( 'jquery' ), 'v5', false );
-
+		wp_localize_script( $this->plugin_name, 'ttt_admin_ajax_object',
+			[
+				'plugin_url' => tttc_get_plugin_dir_url(),
+				'ajax_url' => admin_url( 'admin-ajax.php' )
+			]
+		);
 	}
 
 	public function cron_jobs()

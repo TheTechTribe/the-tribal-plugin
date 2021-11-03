@@ -26,7 +26,12 @@
 #adminmenu .toplevel_page_the-tribal-plugin .wp-menu-image img {
     padding: 0px;
 }
-
 .ttt-form-text{
     margin: 10px 0;
+}
+.import-ajax-status{
+    margin:20px 0;
+}
+.import-ajax-status .ajax-loader p{
+    font-size: 15px;
 }
