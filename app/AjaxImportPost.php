@@ -81,6 +81,11 @@ class AjaxImportPost
 		$getLastImport = \TheTechTribeClient\HealthStatus::get_instance()->lastDownload([
 			'action' => 'r',
 		]);
+		
+		$dateGetLastImport = '';
+		if( $getLastImport && $getLastImport != ''){
+			$dateGetLastImport = date('d F Y h:i A', strtotime($getLastImport));
+		}
 
 		$arrReturnMsg = [
 			'code' 						=> $returnCode,
@@ -90,7 +95,7 @@ class AjaxImportPost
 			'msg_content' 				=> $msgContent,
 			'action' 					=> true,
 			'last_check' 				=> date('d F Y h:i A', strtotime($getLastCheck)),
-			'last_successfull_import' 	=> date('d F Y h:i A', strtotime($getLastImport))
+			'last_successfull_import' 	=> $dateGetLastImport
 		];
 
 		wp_send_json_error($arrReturnMsg);
