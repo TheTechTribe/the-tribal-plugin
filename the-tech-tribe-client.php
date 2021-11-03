@@ -78,8 +78,10 @@ function tttc_get_plugin_details(){
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
-	$ret = get_plugins();
-	return $ret['the-tech-tribe-client/the-tech-tribe-client.php'];
+	// $ret = get_plugins();
+	// ttt_dd($ret);
+	$ret = get_plugin_data( __FILE__ );
+	return $ret;
 }
 
 function tttc_get_text_domain(){
