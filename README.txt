@@ -67,6 +67,9 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 == Changelog ==
 
+= 0.10.0 =
+* Fix inline image in the content, wherein the path is not changed according to the wordpress media settings.
+
 = 0.9.1 =
 * Update notification message when no blogs to import.
 * Added progress status when importing blogs.

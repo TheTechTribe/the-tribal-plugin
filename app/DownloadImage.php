@@ -70,6 +70,8 @@ class DownloadImage
         );
 
         $attach_id = wp_insert_attachment( $attachment, $mirror['file'], $parent_id );
+        
+        update_post_meta($attach_id, '_wp_attachment_image_alt', basename( $image ));
 
         $attach_data = wp_generate_attachment_metadata( $attach_id, $mirror['file'] );
 

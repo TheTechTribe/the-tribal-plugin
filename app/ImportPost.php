@@ -86,8 +86,9 @@ class ImportPost
             
             $postData = [];
             $post_id = 0;
-            
+
             foreach($dataPost as $post) {
+                $postContent = '';
                 if( ! post_exists($post['title']) ) {
                     //insert post
                     $post_date = date( 'Y-m-d H:i:s' );
@@ -99,13 +100,6 @@ class ImportPost
                             //$postStatus = 'future';
                         }
                     }
-                    
-                    $content = str_replace($blogUrl, site_url(), $post['content']);
-                    //end of line attribute
-                    $content .= '<p>';
-                    $content .= '<p>';
-                    $content .= '<p>';
-                    $content .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission.</p>';
 
                     if( $publishPostSetting == 'auto' ) {
                         $postStatus = 'publish';
@@ -113,7 +107,6 @@ class ImportPost
                     
                     $postData = [
                         'post_title'        => $post['title'],
-                        'post_content'      => $content,
                         'post_status'       => $postStatus,
                         'post_date'         => $post_date_schedule, 
                         'post_date_gmt'     => $post_date_schedule, 
@@ -124,13 +117,6 @@ class ImportPost
                     //insert post
 
                     if($post_id) {
-
-                        $argUpdate = [
-                            'ID'            => $post_id,
-                            'post_modified'     => date( 'Y-m-d H:i' ),
-                            'post_modified_gmt' => date( 'Y-m-d H:i' ),
-                        ];
-                        wp_update_post( $argUpdate );
 
                         $ret['summary']['post'][$post_id]['id'] = $post_id;
                         $ret['summary']['post'][$post_id]['title'] = $post['title'];
@@ -153,6 +139,8 @@ class ImportPost
                         //insert category
                         
                         $postImages = $post['meta']['images']['contents'];
+                        $searchImageToReplaces = [];
+                        $actualImageToReplaces = [];
                         //download images, more of inline image in the content
                         if(is_array($postImages) && count($postImages) >= 1) {
                             foreach($postImages as $postImage) {
@@ -160,8 +148,12 @@ class ImportPost
                                 	'file_url' => $postImage,
                                 	'parent_post_id' => $post_id
                                 ]);
+                                $wp_get_attachment_url = wp_get_attachment_url($downloadImages);
+                                $searchImageToReplaces[] = $postImage;
+                                $actualImageToReplaces[] = $wp_get_attachment_url;
                                 $ret['summary']['post'][$post_id]['attach_image'][$downloadImages]['id'] = $downloadImages;
-                                $ret['summary']['post'][$post_id]['attach_image'][$downloadImages]['file_name'] = wp_get_attachment_url($downloadImages);
+                                $ret['summary']['post'][$post_id]['attach_image'][$downloadImages]['old_file_name'] = $postImage;
+                                $ret['summary']['post'][$post_id]['attach_image'][$downloadImages]['file_name'] = $wp_get_attachment_url;
                             }
                         }
                         //download images, more of inline image in the content
@@ -173,13 +165,27 @@ class ImportPost
                             	'file_url' => $postFeaturedImage,
                             	'parent_post_id' => $post_id
                             ]);
-                            $ret['summary']['post'][$post_id]['attach_image'][$featuredAttachmentId]['id'] = $featuredAttachmentId;
-                            $ret['summary']['post'][$post_id]['attach_image'][$featuredAttachmentId]['file_name'] = wp_get_attachment_url($featuredAttachmentId);
                             $ret['summary']['post'][$post_id]['featured_image'][$featuredAttachmentId]['id'] = $featuredAttachmentId;
                             $ret['summary']['post'][$post_id]['featured_image'][$featuredAttachmentId]['file_name'] = wp_get_attachment_url($featuredAttachmentId);
                             set_post_thumbnail( $post_id, $featuredAttachmentId );
                         }
                         //download images, set as featured image
+
+                        //update the post
+                        //$postContent = str_replace($blogUrl, site_url(), $post['content']);
+                        $postContent = str_replace($searchImageToReplaces, $actualImageToReplaces, $post['content']);
+                        $postContent .= '<p>';
+                        $postContent .= '<p>';
+                        $postContent .= '<p>';
+                        $postContent .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission.</p>';
+                        $argUpdate = [
+                            'ID'                => $post_id,
+                            'post_modified'     => date( 'Y-m-d H:i' ),
+                            'post_modified_gmt' => date( 'Y-m-d H:i' ),
+                            'post_content'      => $postContent
+                        ];
+                        wp_update_post( $argUpdate );
+                        //update the post
                     }
                 } else {
                     //exists
