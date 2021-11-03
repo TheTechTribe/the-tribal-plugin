@@ -54,7 +54,8 @@
 		var retData = dataArray;
 
 		var retCode = retData.data.code;
-		if(retCode == '' || retCode == 'rest_no_route'){
+		
+		if(retCode == '' || retCode == 'rest_no_route' || retCode == 'error'){
 			retCode = 'danger';
 		}
 		var retMsgHeader = retData.data.msg_header;
@@ -132,7 +133,7 @@
 				});
 				
 				request.done(function( msg ) {
-					console.log(msg);
+					//console.log(msg);
 					toggleAlertHTML(true, ajaxShowAlert(msg));
 					toggleAjaxStatusHTML(false);
 					
@@ -148,7 +149,7 @@
 				});
 				
 				request.fail(function( jqXHR, textStatus ) {
-					console.log(textStatus);
+					//console.log(textStatus);
 					msg = "<h4>Request failed: " + textStatus+"</h4>";
 					toggleAjaxStatusHTML(true, msg);
 					$(".btn-import").prop('disabled', false);
