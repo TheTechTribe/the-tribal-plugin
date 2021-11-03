@@ -118,7 +118,7 @@
 
 				toggleAjaxStatusHTML(true, msg);
 				toggleAlertHTML();
-				
+
 				$(".btn-import").prop('disabled', true);
 				
 				var data = {
