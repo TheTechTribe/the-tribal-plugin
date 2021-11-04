@@ -50,13 +50,19 @@ class StatusVerbage
                     'msg' => 'Your Tech Tribe plugin is now Activated. Make sure you adjust your Settings below.'
                 ],
                 'error' => [
-                    'header' => 'Error',
-                    'msg' => 'Error API Key.'
+                    'header' => 'UH-OH - THERE WAS AN ERROR',
+                    'msg' => 'Uh-oh, it looks like the API Key you entered was incorrect. Please try copying again, making sure there are no extra characters coming across in the COPY/PASTE. If it still fails, please email us at help@thetechtribe.com'
                 ],
                 'notverified' => [
                     'header' => 'Error',
                     'msg' => 'Error API Key.'
                 ]
+            ],
+            'domain' => [
+                'error' => [
+                    'header' => 'UH-OH - ACTIVATION ISSUE',
+                    'msg'   => 'Your API Key has already been activated on a different domain name to this one. If you are changing the URL of your website, please email help@thetechtribe.com with your new domain and will adjust this in the back-end.'
+                ],
             ],
             'settings' => [
                 'success' => [
@@ -91,7 +97,17 @@ class StatusVerbage
                     'header' => 'Error',
                     'msg' => 'Settings not updated.'
                 ]
-            ]
+            ],
+            'general_error' => [
+                'timeout' => [
+                    'header' => 'UH-OH - TIME-OUT ISSUE',
+                    'msg' => 'For some reason, there has been a time-out issue trying to run this task. Please try again shortly and if it still continues - please email help@thetechtribe.com.'
+                ],
+                'error' => [
+                    'header' => 'UH-OH - THERE WAS AN ERROR',
+                    'msg' => 'Uh-oh, there was an undocumented error. If this continually happens, please let us know via email at help@thetechtribe.com and let us know what you were trying to do at the time.'
+                ],
+            ],
         ];
 
         if($key != '' && isset($arrStatus[$key])){

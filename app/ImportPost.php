@@ -209,6 +209,25 @@ class ImportPost
             tttLastDownload();
         }
 
+        //invalid api key, means wrong
+        if(isset($ret['msg']) && $ret['msg'] == 'api error'){
+            $apiVerbage = tttGetAPIVerbage();
+            $ret['msg-header'] = $apiVerbage['error']['header'];
+            $ret['msg'] = $apiVerbage['error']['msg'];
+
+            tttSetKeyActive(0);
+			tttRemoveCronJob();
+        }
+
+        if(isset($ret['msg']) && $ret['msg'] == 'domain already used'){
+            $domainVerbage = tttGetDomainVerbage();
+            $ret['msg-header'] = $domainVerbage['error']['header'];
+            $ret['msg'] = $domainVerbage['error']['msg'];
+
+            tttSetKeyActive(0);
+			tttRemoveCronJob();
+        }
+
         if(!empty($ret['summary']['exists']['post']) && count($ret['summary']['exists']['post']) > 0) {
             $ret['success'] = true;
             $ret['msg-header'] = $statusVerbage['nothing']['header'];
@@ -224,7 +243,7 @@ class ImportPost
         tttEndImport();
 
         tttLogReturn($ret);
-
+        
         return rest_ensure_response($ret);
     }
 

@@ -9,7 +9,7 @@
  * that starts the plugin.
  *
  * @link              thetechtribe.com
- * @since             0.0.1
+ * @since             0.1.0
  * @package           The_Tech_Tribe_Client
  *
  * @wordpress-plugin

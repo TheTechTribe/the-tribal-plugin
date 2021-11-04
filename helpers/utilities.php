@@ -3,6 +3,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+if(!function_exists('ttt_str_contains')){
+    function ttt_str_contains($haystack, $needle) {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    }
+}
+
 if(!function_exists('ttt_ensure_response_api')){
     function ttt_ensure_response_api($msg = '', $code = true, $meta = [])
     {
@@ -158,4 +164,29 @@ function tttRemoveCronJob()
     wp_unschedule_event( $timestamp, 'ttt_user_cron_exec' );
 
 	wp_clear_scheduled_hook( 'ttt_user_cron_exec' );
+}
+
+function tttThrowTimeOutError($msg)
+{
+    if(ttt_str_contains($msg, 'cURL error 28')) {
+        $ret = \TheTechTribeClient\StatusVerbage::get_instance()->get('general_error');
+        return $ret['timeout'];
+    }
+    return false;
+}
+
+function tttThrowGeneralErrorMsg()
+{
+    $general = \TheTechTribeClient\StatusVerbage::get_instance()->get('general_error');
+    return $general['error'];
+}
+
+function tttGetAPIVerbage()
+{
+    return \TheTechTribeClient\StatusVerbage::get_instance()->get('api');
+}
+
+function tttGetDomainVerbage()
+{
+    return \TheTechTribeClient\StatusVerbage::get_instance()->get('domain');
 }

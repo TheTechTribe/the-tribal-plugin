@@ -78,6 +78,10 @@ class Dashboard
 		$users = get_users();
 
         $template = tttc_get_plugin_dir() . 'admin/partials/dashboard/main.php';
+		$partTemplateApi = tttc_get_plugin_dir() . 'admin/partials/dashboard/api.php';
+		$partTemplateSettings = tttc_get_plugin_dir() . 'admin/partials/dashboard/settings.php';
+		$partTemplateImport = tttc_get_plugin_dir() . 'admin/partials/dashboard/import.php';
+
         if ( is_file( $template ) ) {
             require_once $template;
         }
@@ -85,16 +89,14 @@ class Dashboard
     
 	public function update()
 	{
-		$userId = 0;
-	
 		if( $_POST )
 		{
-			$statusVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('api');
+			$generalErrorVerbage = tttThrowGeneralErrorMsg();
 
 			$arrReturnMsg = [
 				'code' => 'error',
-				'msg-header' => $statusVerbage['error']['header'],
-				'msg' => $statusVerbage['error']['msg'],
+				'msg-header' => $generalErrorVerbage['header'],
+				'msg' => $generalErrorVerbage['msg'],
 				'status' => 200,
 				'msg-content' => '',
 				'action' => false
@@ -108,39 +110,24 @@ class Dashboard
 				return;
 			}
 
-			$this->updateSync($_POST);
-			// $updateApiKey = $this->updateAPIKey($_POST);
-			// if( $updateApiKey )
-			// {
-			// 	return $updateApiKey;
-			// }
+			$updateSync = $this->updateSync($_POST);
+			if($updateSync){
+				return $updateSync;
+			}
 
-			$apiKeyDB	= WPOptions::get_instance()->apiKey(['action' => 'r']);
-			if( isset($_POST['ttt_api_key']) && $apiKeyDB != $_POST['ttt_api_key']) {
+			if( isset($_POST['ttt_api_key']) && trim($_POST['ttt_api_key']) != '' ) {
 				$updateApiKey = $this->updateAPIKey($_POST);
 				if( $updateApiKey )
 				{
 					return $updateApiKey;
 				}
-			} else {
-				$settingsVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('settings');
-				$arrReturnMsg = [
-					'code' => 'success',
-					'msg-header' => $settingsVerbage['success']['header'],
-					'msg' => $settingsVerbage['success']['msg'],
-					'status' => 200,
-					'msg-content' => '',
-					'action' => false
-				];
-			}
+			} 
 			
 			$forceImport = $this->forceImport($_POST);
 			if( $forceImport )
 			{
 				return $forceImport;
 			}
-			
-			return $arrReturnMsg;
 		}
 	}
 
@@ -198,35 +185,40 @@ class Dashboard
 	{
 		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_update_dashboard_user' ){
 			$arrReturnMsg['action'] = true;
+			if(
+				isset($request['ttt_publish_post'])
+				|| isset($request['ttt_post_author'])
+			) {
+				$publishPosts 	= $request['ttt_publish_post'];
 
-			$publishPosts 	= $request['ttt_publish_post'];
+				WPOptions::get_instance()->publishPosts([
+					'action' 	=> 'u',
+					'value' 	=> $publishPosts
+				]);
+				
+				$defaultAuthor 	= $request['ttt_post_author'];
+				WPOptions::get_instance()->defaultAuthor([
+					'action' 	=> 'u',
+					'value' 	=> $defaultAuthor
+				]);
 
-			WPOptions::get_instance()->publishPosts([
-				'action' 	=> 'u',
-				'value' 	=> $publishPosts
-			]);
+				$arrReturnMsg = [
+					'code' 		=> 'success',
+					'msg' 		=> 'Sucessfully Updated',
+					'status' 	=> 200,
+					'action' 	=> true
+				];
+
+				return $arrReturnMsg;
+			}
 			
-			$defaultAuthor 	= $request['ttt_post_author'];
-			WPOptions::get_instance()->defaultAuthor([
-				'action' 	=> 'u',
-				'value' 	=> $defaultAuthor
-			]);
-
-			$arrReturnMsg = [
-				'code' 		=> 'success',
-				'msg' 		=> 'Sucessfully Updated',
-				'status' 	=> 200,
-				'action' 	=> true
-			];
-
-			return $arrReturnMsg;
 		}
 		return false;
 	}
 
 	private function updateAPIKey($request)
 	{
-		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_update_dashboard_user' ){
+		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_activate_key' ){
 			$arrReturnMsg['action'] = true;
 
 			if(
@@ -234,6 +226,7 @@ class Dashboard
 				&& !empty(trim($request['ttt_api_key'])) 
 			){
 				$apiKey	= $request['ttt_api_key'];
+				$apiVerbage = tttGetAPIVerbage();
 				
 				//verify the auth
 				$verifyArgs = [
@@ -262,17 +255,41 @@ class Dashboard
 				if(isset($ret->data['code']) && ! $ret->data['success']) {
 					$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 					$returnCode = (!$ret->data['success']) ? 'error':'';
+
+					//invalid api key, means wrong
+					if(isset($ret->data['msg']['errors']['invalid']) && $ret->data['msg']['errors']['invalid'][0] == 'api error'){
+						$returnMsgHeader = $apiVerbage['error']['header'];
+						$returnMsg = $apiVerbage['error']['msg'];
+					}
+
+					//invalid domain url
+					if(isset($ret->data['msg']['errors']['alreadyused']) && $ret->data['msg']['errors']['alreadyused'][0] == 'domain already used'){
+						$domainVerbage = tttGetDomainVerbage();
+						$returnMsgHeader = $domainVerbage['error']['header'];
+						$returnMsg = $domainVerbage['error']['msg'];
+					}
+
 					tttSetKeyActive(0);
 					tttRemoveCronJob();
 				}
 
 				if(!isset($ret->data['code']) && !is_array($ret->data)){
 					$returnMsg = $ret->data;
+					
+					$getTimeOutErrror = tttThrowTimeOutError($returnMsg);
+					if($getTimeOutErrror){
+						$returnMsgHeader = $getTimeOutErrror['header'];
+						$returnMsg = $getTimeOutErrror['msg'];
+					}
+
 					tttSetKeyActive(0);
 					tttRemoveCronJob();
 				}
 
 				if(isset($ret->data['code']) && $ret->data['success']) {
+					$returnMsgHeader = $apiVerbage['success']['header'];
+					$returnMsg = $apiVerbage['success']['msg'];
+
 					tttSetKeyActive(1);
 					tttInitCronJob();
 				}
