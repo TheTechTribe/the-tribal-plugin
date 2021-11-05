@@ -264,6 +264,13 @@ class Dashboard
 						$returnMsg = $apiVerbage['error']['msg'];
 					}
 
+					//invalid api key, means wrong
+					if(isset($ret->data['msg']['errors']['ac_tag']) && $ret->data['msg']['errors']['ac_tag'][0] == 'ac tag error'){
+						$acTagVerbage = tttGetACTagVerbage();
+						$returnMsgHeader = $acTagVerbage['error']['header'];
+						$returnMsg = $acTagVerbage['error']['msg'];
+					}
+
 					//invalid domain url
 					if(isset($ret->data['msg']['errors']['alreadyused']) && $ret->data['msg']['errors']['alreadyused'][0] == 'domain already used'){
 						$domainVerbage = tttGetDomainVerbage();

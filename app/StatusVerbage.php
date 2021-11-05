@@ -56,7 +56,13 @@ class StatusVerbage
                 'notverified' => [
                     'header' => 'Error',
                     'msg' => 'Error API Key.'
-                ]
+                ],
+            ],
+            'ac_tag' => [
+                'error' => [
+                    'header' => 'UH-OH - THERE WAS AN ERROR',
+                    'msg' => 'Uh-oh, it looks like you have invalid AC tag. If it still fails, please email us at help@thetechtribe.com'
+                ],
             ],
             'domain' => [
                 'error' => [

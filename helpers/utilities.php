@@ -198,6 +198,11 @@ function tttGetDomainVerbage()
     return \TheTechTribeClient\StatusVerbage::get_instance()->get('domain');
 }
 
+function tttGetACTagVerbage()
+{
+    return \TheTechTribeClient\StatusVerbage::get_instance()->get('ac_tag');
+}
+
 function tttCustomLogs($log) { 
     if(is_array($log) || is_object($log)) { 
         $log = json_encode($log);
