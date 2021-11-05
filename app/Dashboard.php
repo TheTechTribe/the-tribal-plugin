@@ -91,6 +91,14 @@ class Dashboard
 	{
 		if( $_POST )
 		{
+			if ( 
+				empty( $_POST['_wpnonce'] ) 
+				&& ! wp_verify_nonce( $_POST['_wpnonce'], 'ttt_client_update_plugin' ) 
+				&& check_admin_referer( $_POST['_wp_http_referer'], 'ttt_client_update_plugin' ) 
+			) {
+				return;
+			}
+
 			$generalErrorVerbage = tttThrowGeneralErrorMsg();
 
 			$arrReturnMsg = [
@@ -101,14 +109,6 @@ class Dashboard
 				'msg-content' => '',
 				'action' => false
 			];
-
-			if ( 
-				empty( $_POST['_wpnonce'] ) 
-				&& ! wp_verify_nonce( $_POST['_wpnonce'], 'ttt_client_update_plugin' ) 
-				&& check_admin_referer( $_POST['_wp_http_referer'], 'ttt_client_update_plugin' ) 
-			) {
-				return;
-			}
 
 			$updateSync = $this->updateSync($_POST);
 			if($updateSync){
@@ -303,7 +303,7 @@ class Dashboard
 				];
 
 				tttVerifyChecked($returnCode, $returnMsg);
-				
+
 				return $arrReturnMsg;
 			}
 		}

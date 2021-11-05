@@ -43,7 +43,7 @@ class ImportPost
     public function import($args = [])
     {
         require_once ABSPATH . 'wp-admin/includes/post.php';
-        
+
         $statusVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('import');
 
         $ret = [
@@ -57,7 +57,9 @@ class ImportPost
         tttResetDownloadStatusStartEnd();
         
         tttStartImport();
- 
+        
+        tttCustomLogs("start import posts : ");
+
         $countSuccess = 0;
 
         $currentUserId = WPOptions::get_instance()->defaultAuthor();
@@ -138,7 +140,7 @@ class ImportPost
                         }
                         //insert category
                         
-                        $postImages = $post['meta']['images']['contents'];
+                        $postImages = isset($post['meta']['images']['contents']) ? $post['meta']['images']['contents'] : [];
                         $searchImageToReplaces = [];
                         $actualImageToReplaces = [];
                         //download images, more of inline image in the content
@@ -159,11 +161,12 @@ class ImportPost
                         //download images, more of inline image in the content
 
                         //download images, set as featured image
-                        $postFeaturedImage = $post['meta']['images']['featured'];
+                        $postFeaturedImage = isset($post['meta']['images']['featured']['image']) ? $post['meta']['images']['featured']['image'] : '';
                         if(!empty($postFeaturedImage)) {
                             $featuredAttachmentId = \TheTechTribeClient\DownloadImage::get_instance()->download([
                             	'file_url' => $postFeaturedImage,
-                            	'parent_post_id' => $post_id
+                            	'parent_post_id' => $post_id,
+                                'alt_text' => $post['meta']['images']['featured']['alt_text']
                             ]);
                             $ret['summary']['post'][$post_id]['featured_image'][$featuredAttachmentId]['id'] = $featuredAttachmentId;
                             $ret['summary']['post'][$post_id]['featured_image'][$featuredAttachmentId]['file_name'] = wp_get_attachment_url($featuredAttachmentId);
@@ -177,7 +180,12 @@ class ImportPost
                         $postContent .= '<p>';
                         $postContent .= '<p>';
                         $postContent .= '<p>';
-                        $postContent .= '<p>Article originally appear on The <a href="'.$post['get_the_permalink'].'" target="_blank">Technology Press</a> and used with Permission.</p>';
+                        $postContent .= '<p>Article originally appeared on <a href="'.$post['get_the_permalink'].'" target="_blank">The Technology Press</a> and used with permission.</p>';
+
+                        //remove extra carraige returns
+                        $postContent = str_replace(["\n", "\r"], '', $postContent);
+                        $postContent = nl2br($postContent);
+
                         $argUpdate = [
                             'ID'                => $post_id,
                             'post_modified'     => date( 'Y-m-d H:i' ),
@@ -197,6 +205,7 @@ class ImportPost
             $ret['msg'] = $getPost->data['msg'];
             $ret['code'] = $getPost->data['code'];
             $ret['post_count_imported'] = $countSuccess;
+            tttCustomLogs("nothing to import : ");
         }
 
         if( $countSuccess > 0 ) {
@@ -205,6 +214,9 @@ class ImportPost
             $ret['msg'] = $statusVerbage['success']['msg'];
             $ret['code'] = 'success';
             $ret['post_count_imported'] = $countSuccess;
+
+            tttCustomLogs("import posts : ");
+            tttCustomLogs($ret);
 
             tttLastDownload();
         }
@@ -243,7 +255,12 @@ class ImportPost
         tttEndImport();
 
         tttLogReturn($ret);
+
+        tttCustomLogs("return import posts : ");
+        tttCustomLogs($ret);
         
+        tttCustomLogs("end import posts");
+
         return rest_ensure_response($ret);
     }
 

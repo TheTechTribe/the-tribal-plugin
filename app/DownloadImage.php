@@ -52,6 +52,7 @@ class DownloadImage
     {
         $image_url = $args['file_url'] ?? '';
         $parent_id = $args['parent_post_id'] ?? 0;
+        $alt_text  = $args['alt_text'] ?? '';
 
         $image = $image_url;
 
@@ -71,7 +72,9 @@ class DownloadImage
 
         $attach_id = wp_insert_attachment( $attachment, $mirror['file'], $parent_id );
         
-        update_post_meta($attach_id, '_wp_attachment_image_alt', basename( $image ));
+        if($alt_text != ''){
+            update_post_meta($attach_id, '_wp_attachment_image_alt', $alt_text);
+        }
 
         $attach_data = wp_generate_attachment_metadata( $attach_id, $mirror['file'] );
 

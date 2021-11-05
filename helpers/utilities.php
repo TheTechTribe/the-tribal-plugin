@@ -190,3 +190,18 @@ function tttGetDomainVerbage()
 {
     return \TheTechTribeClient\StatusVerbage::get_instance()->get('domain');
 }
+
+function tttCustomLogs($log) { 
+    if(is_array($log) || is_object($log)) { 
+        $log = json_encode($log);
+    }
+    $upload_dir = wp_upload_dir();
+
+    $file = $upload_dir['basedir'] . '/ttt-logs.log'; 
+
+    if(is_writable($upload_dir['basedir'])){
+        $file = fopen($file,"a"); 
+        fwrite($file, "\n" . date('Y-m-d h:i:s') . " :: " . $log); 
+        fclose($file); 
+    }
+}

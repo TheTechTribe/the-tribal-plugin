@@ -2,9 +2,9 @@
 Contributors: (this should be a list of wordpress.org userid's)
 Donate link: thetechtribe.com
 Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+Requires at least: 5.8
+Tested up to: 5.8
+Stable tag: 0.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,11 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 2. This is the second screen shot
 
 == Changelog ==
+
+= 0.11.0 =
+* Improve status notification.
+* Seperate API Key to its own tab.
+* Remove extra carriage return in the content.
 
 = 0.10.0 =
 * Fix inline image in the content, wherein the path is not changed according to the wordpress media settings.

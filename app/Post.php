@@ -70,8 +70,11 @@ class Post
 				'timeout'   => 45,
 				'body'		=> $postBodyArgs['body']
 			]);
-
+			
+			
 			$resCode = wp_remote_retrieve_response_code($response);
+			tttCustomLogs("import post code : " . $resCode);
+
 			$resBody = wp_remote_retrieve_body($response);
 			$toArrayBody = json_decode($resBody, 1);
 			

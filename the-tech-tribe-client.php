@@ -16,7 +16,7 @@
  * Plugin Name:       The Tribal Plugin
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
- * Version:           0.10.0
+ * Version:           0.11.0
  * Author:            The Tech Tribe
  * Author URI:        thetechtribe.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.10.0' );
+define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.11.0' );
 
 date_default_timezone_set(get_option('timezone_string'));
 
@@ -78,8 +78,6 @@ function tttc_get_plugin_details(){
 	if ( ! function_exists( 'get_plugins' ) ) {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
-	// $ret = get_plugins();
-	// ttt_dd($ret);
 	$ret = get_plugin_data( __FILE__ );
 	return $ret;
 }
@@ -123,7 +121,9 @@ function ttt_init_client()
 {
 	if(!is_admin())
 	{
-		
+		// tttCustomLogs("Hey! I am in a header");
+		// $arr = ["foo", "bar"];
+		// tttCustomLogs($arr);
 	}
 }
 add_action('init', 'ttt_init_client');

@@ -60,10 +60,23 @@ class Authenticate
 				'user_api_key'	=> $apiKey,
 			],
 		]);
+		
+		tttCustomLogs("start auth api : ");
+		
+		tttCustomLogs("api reponse var : ");
+		tttCustomLogs($response);
+		
+		$resCode = wp_remote_retrieve_response_code($response);
+		tttCustomLogs("api return code : " . $resCode);
 
-		//$resCode = wp_remote_retrieve_response_code($response);
 		$resBody = wp_remote_retrieve_body($response);
+		tttCustomLogs("api return body : ");
+		tttCustomLogs($resBody);
+
+		tttCustomLogs("end auth api : ");
+
 		$toArrayBody = json_decode($resBody, 1);
+		
 		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
 			$ret = $error_message;
