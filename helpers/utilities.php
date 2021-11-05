@@ -81,11 +81,18 @@ function tttGetNextCronTime( $cron_name ){
 	return end($timeStamp);
 }
 
+function tttGetNextCronTimeDate() {
+    date_default_timezone_set(wp_timezone_string());
+    $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
+    //return ($nextSchedule) ? date_i18n('d F Y h:i A', $nextSchedule) : '';
+    return ($nextSchedule) ? date('d F Y h:i A', $nextSchedule) : '';
+}
+
 function tttStartImport()
 {
     \TheTechTribeClient\HealthStatus::get_instance()->importJobStart([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s') . ' : Start'
+        'value' => date_i18n('Y/m/d H:i:s') . ' : Start'
     ]);
 }
 
@@ -93,7 +100,7 @@ function tttEndImport()
 {
     \TheTechTribeClient\HealthStatus::get_instance()->importJobEnd([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s') . ' : End'
+        'value' => date_i18n('Y/m/d H:i:s') . ' : End'
     ]);
 }
 
@@ -101,7 +108,7 @@ function tttLastDownload()
 {
     \TheTechTribeClient\HealthStatus::get_instance()->lastDownload([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s')
+        'value' => date_i18n('Y/m/d H:i:s')
     ]);
 }
 
@@ -109,7 +116,7 @@ function tttLastChecked()
 {
     \TheTechTribeClient\HealthStatus::get_instance()->lastChecked([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s')
+        'value' => date_i18n('Y/m/d H:i:s')
     ]);
 }
 
@@ -117,7 +124,7 @@ function tttLastCheckedStatus($code, $msg)
 {
     \TheTechTribeClient\HealthStatus::get_instance()->lastCheckedStatus([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s') .' : '. $code . ' : ' . $msg
+        'value' => date_i18n('Y/m/d H:i:s') .' : '. $code . ' : ' . $msg
     ]);
 }
 
@@ -133,7 +140,7 @@ function tttImportJobVia($via)
 {
     \TheTechTribeClient\HealthStatus::get_instance()->importJobVia([
         'action' => 'u',
-        'value' => date('Y/m/d H:i:s') . ' : ' . $via
+        'value' => date_i18n('Y/m/d H:i:s') . ' : ' . $via
     ]);
 }
 
@@ -201,7 +208,7 @@ function tttCustomLogs($log) {
 
     if(is_writable($upload_dir['basedir'])){
         $file = fopen($file,"a"); 
-        fwrite($file, "\n" . date('Y-m-d h:i:s') . " :: " . $log); 
+        fwrite($file, "\n" . date_i18n('Y-m-d h:i:s') . " :: " . $log); 
         fclose($file); 
     }
 }

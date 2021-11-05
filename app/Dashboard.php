@@ -73,6 +73,8 @@ class Dashboard
             'action' => 'r',
         ]);
 
+		$nextScheduleCron = tttGetNextCronTimeDate();
+
 		$defaultAuthor 	= WPOptions::get_instance()->defaultAuthor();
 
 		$users = get_users();
@@ -270,7 +272,6 @@ class Dashboard
 					}
 
 					tttSetKeyActive(0);
-					tttRemoveCronJob();
 				}
 
 				if(!isset($ret->data['code']) && !is_array($ret->data)){
@@ -283,7 +284,6 @@ class Dashboard
 					}
 
 					tttSetKeyActive(0);
-					tttRemoveCronJob();
 				}
 
 				if(isset($ret->data['code']) && $ret->data['success']) {
@@ -291,7 +291,6 @@ class Dashboard
 					$returnMsg = $apiVerbage['success']['msg'];
 
 					tttSetKeyActive(1);
-					tttInitCronJob();
 				}
 				
 				$arrReturnMsg = [

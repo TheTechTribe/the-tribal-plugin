@@ -1,22 +1,19 @@
 <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#import');?>" method="post" class="dashboard-form-import">
 
     <p>Your server will automatically check for new Blog Posts approximately every 24 hours. If you want to run a Manual Import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
-    <?php
-        $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
-    ?>
     <div id="apiHelp" class="ttt-form-text">
         <div class="container-ttt-content">
             <div class="row">
                 <div class="col-md-3">Last Check: </div>
-                <div class="col-md-8"><span class="last-check"><?php echo ($lastChecked && !empty($lastChecked)) ? date('d F Y h:i A', strtotime($lastChecked)) : '';?></span></div>
+                <div class="col-md-8"><span class="last-check"><?php echo ($lastChecked && !empty($lastChecked)) ? date_i18n('d F Y h:i A', strtotime($lastChecked)) : '';?></span></div>
             </div>
             <div class="row">
                 <div class="col-md-3">Next Schedule Check: </div>
-                <div class="col-md-8"><?php echo ($nextSchedule) ? date('d F Y h:i A', $nextSchedule) : '';?> </div>
+                <div class="col-md-8"><?php echo $nextScheduleCron;?> </div>
             </div>
             <div class="row">
                 <div class="col-md-3">Last Successfull Import: </div>
-                <div class="col-md-8"><span class="last-success-import"><?php echo ($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?></span></div>
+                <div class="col-md-8"><span class="last-success-import"><?php echo ($lastDownload && !empty($lastDownload)) ? date_i18n('d F Y h:i A', strtotime($lastDownload)) : '';?></span></div>
             </div>
 
             <div class="import-ajax-status"></div>

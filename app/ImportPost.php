@@ -93,10 +93,10 @@ class ImportPost
                 $postContent = '';
                 if( ! post_exists($post['title']) ) {
                     //insert post
-                    $post_date = date( 'Y-m-d H:i:s' );
-                    $post_date_schedule = date( 'Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
+                    $post_date = date_i18n( 'Y-m-d H:i:s' );
+                    $post_date_schedule = date_i18n( 'Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
                     if( $post['meta']['date_schedule'] != '' ) {
-                        $post_date_schedule = date('Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
+                        $post_date_schedule = date_i18n('Y-m-d H:i:s', strtotime($post['meta']['date_schedule'] . ' 12:00:00'));
                         if( $post['meta']['date_schedule'] > $post_date) {
                             $postStatus = 'draft';
                             //$postStatus = 'future';
@@ -188,8 +188,8 @@ class ImportPost
 
                         $argUpdate = [
                             'ID'                => $post_id,
-                            'post_modified'     => date( 'Y-m-d H:i' ),
-                            'post_modified_gmt' => date( 'Y-m-d H:i' ),
+                            'post_modified'     => date_i18n( 'Y-m-d H:i' ),
+                            'post_modified_gmt' => date_i18n( 'Y-m-d H:i' ),
                             'post_content'      => $postContent
                         ];
                         wp_update_post( $argUpdate );

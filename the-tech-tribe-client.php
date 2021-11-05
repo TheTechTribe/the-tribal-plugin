@@ -37,8 +37,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.11.0' );
 
-date_default_timezone_set(get_option('timezone_string'));
-
+//date_default_timezone_set(wp_timezone_string());
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-the-tech-tribe-client-activator.php
@@ -46,6 +45,8 @@ date_default_timezone_set(get_option('timezone_string'));
 function activate_the_tech_tribe_client() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client-activator.php';
 	The_Tech_Tribe_Client_Activator::activate();
+	
+	tttInitCronJob();
 }
 
 /**

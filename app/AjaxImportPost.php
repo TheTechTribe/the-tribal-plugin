@@ -84,7 +84,7 @@ class AjaxImportPost
 		
 		$dateGetLastImport = '';
 		if( $getLastImport && $getLastImport != ''){
-			$dateGetLastImport = date('d F Y h:i A', strtotime($getLastImport));
+			$dateGetLastImport = date_i18n('d F Y h:i A', strtotime($getLastImport));
 		}
 
 		$arrReturnMsg = [
@@ -94,7 +94,7 @@ class AjaxImportPost
 			'status' 					=> $ret->status,
 			'msg_content' 				=> $msgContent,
 			'action' 					=> true,
-			'last_check' 				=> date('d F Y h:i A', strtotime($getLastCheck)),
+			'last_check' 				=> date_i18n('d F Y h:i A', strtotime($getLastCheck)),
 			'last_successfull_import' 	=> $dateGetLastImport
 		];
 
