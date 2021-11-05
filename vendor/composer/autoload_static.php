@@ -9,12 +9,12 @@ class ComposerStaticInitbbdfa9cffa262026606ce56c05a20648
     public static $prefixLengthsPsr4 = array (
         'T' => 
         array (
-            'TheTechTribeClient\\' => 19,
+            'TheTribalPlugin\\' => 16,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'TheTechTribeClient\\' => 
+        'TheTribalPlugin\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),

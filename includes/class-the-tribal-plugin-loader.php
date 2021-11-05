@@ -6,8 +6,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_Loader {
+class The_Tribal_Plugin_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

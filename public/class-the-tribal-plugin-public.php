@@ -6,8 +6,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/public
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/public
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/public
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_Public {
+class The_Tribal_Plugin_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -65,15 +65,15 @@ class The_Tech_Tribe_Client_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in The_Tech_Tribe_Client_Loader as all of the hooks are defined
+		 * defined in The_Tribal_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The The_Tech_Tribe_Client_Loader will then create the relationship
+		 * The The_Tribal_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/the-tech-tribe-client-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/the-tribal-plugin-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -88,15 +88,15 @@ class The_Tech_Tribe_Client_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in The_Tech_Tribe_Client_Loader as all of the hooks are defined
+		 * defined in The_Tribal_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The The_Tech_Tribe_Client_Loader will then create the relationship
+		 * The The_Tribal_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tech-tribe-client-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tribal-plugin-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

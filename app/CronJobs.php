@@ -1,7 +1,7 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
-use TheTechTribeClient\APIPortal;
+use TheTribalPlugin\APIPortal;
 use WP_Error;
 use WP_REST_Response;
 use User;
@@ -54,7 +54,7 @@ class CronJobs
     public function scheduleSyncBlog()
     {
 		tttImportJobVia('Cron Jobs');
-        return \TheTechTribeClient\ImportPost::get_instance()->import();
+        return \TheTribalPlugin\ImportPost::get_instance()->import();
     }
     
 }

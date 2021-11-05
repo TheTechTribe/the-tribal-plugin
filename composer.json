@@ -1,9 +1,9 @@
 {
     "name": "nigelmoore/the-tech-tribe",
-    "description": "The Tech Tribe Client",
+    "description": "The Tribal Plugin",
     "autoload": {
         "psr-4": {
-            "TheTechTribeClient\\": "app/"
+            "TheTribalPlugin\\": "app/"
         }
     },
     "autoload-dev": {

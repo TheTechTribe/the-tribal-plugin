@@ -8,8 +8,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/admin/partials
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/admin/partials
  */
 ?>
 

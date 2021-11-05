@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 /**
  * Dashboard
@@ -139,8 +139,9 @@ class Dashboard
 			$arrReturnMsg['action'] = true;
 
 			tttImportJobVia('Manual Import');
+			tttCustomLogs("start import posts : ");
 
-			$ret = \TheTechTribeClient\ImportPost::get_instance()->import();
+			$ret = \TheTribalPlugin\ImportPost::get_instance()->import();
 			
 			$returnCode = $ret->data['code'];
 			$returnMsg = $ret->data['msg'];
@@ -154,7 +155,7 @@ class Dashboard
 
 			$msgContent = '';
 			if(isset($ret->data['summary']) && isset($ret->data['post_count_imported']) && $ret->data['post_count_imported'] > 0) {
-				$statusVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('import');
+				$statusVerbage = \TheTribalPlugin\StatusVerbage::get_instance()->get('import');
 
 				$msgContent .= '<p>';
 				$msgContent .= '('. $ret->data['post_count_imported'].') '.$statusVerbage['imported']['msg'].' : ';
@@ -177,6 +178,11 @@ class Dashboard
 				'msg-content' => $msgContent,
 				'action' 	=> true
 			];
+			
+			tttCustomLogs("return import posts : ");
+        	tttCustomLogs($ret);
+			
+			tttCustomLogs("end import posts");
 
 			return $arrReturnMsg;
 		}
@@ -236,7 +242,7 @@ class Dashboard
 					'user_api_key' 	=> $apiKey,
 				];
 
-				$ret = \TheTechTribeClient\User::get_instance()->isValid($verifyArgs);
+				$ret = \TheTribalPlugin\User::get_instance()->isValid($verifyArgs);
 
 				//insert api key
 				WPOptions::get_instance()->apiKey([
@@ -277,7 +283,7 @@ class Dashboard
 						$returnMsgHeader = $domainVerbage['error']['header'];
 						$returnMsg = $domainVerbage['error']['msg'];
 					}
-
+					
 					tttSetKeyActive(0);
 				}
 

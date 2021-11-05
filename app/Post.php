@@ -1,7 +1,7 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
-use TheTechTribeClient\APIPortal;
+use TheTribalPlugin\APIPortal;
 use WP_Error;
 use WP_REST_Response;
 use User;
@@ -55,8 +55,8 @@ class Post
 		if($apiKey != '') {
 			
 			//move this to function
-			$userAccountKeys = \TheTechTribeClient\User::get_instance()->getAccountKeys();
-			$userAccountKeys['date_import_blog'] = \TheTechTribeClient\WPOptions::get_instance()->dateImportBlog();
+			$userAccountKeys = \TheTribalPlugin\User::get_instance()->getAccountKeys();
+			$userAccountKeys['date_import_blog'] = \TheTribalPlugin\WPOptions::get_instance()->dateImportBlog();
 			
 			$postBodyArgs = [
 				'body' => $userAccountKeys
@@ -73,7 +73,6 @@ class Post
 			
 			
 			$resCode = wp_remote_retrieve_response_code($response);
-			tttCustomLogs("import post code : " . $resCode);
 
 			$resBody = wp_remote_retrieve_body($response);
 			$toArrayBody = json_decode($resBody, 1);

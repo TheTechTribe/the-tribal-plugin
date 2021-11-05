@@ -6,8 +6,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/admin
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/admin
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/admin
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_Admin {
+class The_Tribal_Plugin_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -65,15 +65,15 @@ class The_Tech_Tribe_Client_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in The_Tech_Tribe_Client_Loader as all of the hooks are defined
+		 * defined in The_Tribal_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The The_Tech_Tribe_Client_Loader will then create the relationship
+		 * The The_Tribal_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/the-tech-tribe-client-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/the-tribal-plugin-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name . 'bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/css/bootstrap-iso-v5.min.css', array(), 'v5', 'all' );
 
 	}
@@ -89,15 +89,15 @@ class The_Tech_Tribe_Client_Admin {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in The_Tech_Tribe_Client_Loader as all of the hooks are defined
+		 * defined in The_Tribal_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The The_Tech_Tribe_Client_Loader will then create the relationship
+		 * The The_Tribal_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tech-tribe-client-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tribal-plugin-admin.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name . 'bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/js/bootstrap-v5-.bundle.min.js', array( 'jquery' ), 'v5', false );
 		wp_localize_script( $this->plugin_name, 'ttt_admin_ajax_object',
 			[
@@ -109,7 +109,7 @@ class The_Tech_Tribe_Client_Admin {
 
 	public function cron_jobs()
 	{
-		\TheTechTribeClient\CronJobs::get_instance()->init();
+		\TheTribalPlugin\CronJobs::get_instance()->init();
 	}
 
 }

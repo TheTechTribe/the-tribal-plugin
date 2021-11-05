@@ -9,8 +9,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_i18n {
+class The_Tribal_Plugin_i18n {
 
 
 	/**
@@ -35,7 +35,7 @@ class The_Tech_Tribe_Client_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'the-tech-tribe-client',
+			'the-tribal-plugin',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

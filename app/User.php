@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 use WP_User_Query;
 
@@ -42,7 +42,7 @@ class User
 
     public function isValid($args = [])
     {
-        $ret = \TheTechTribeClient\Authenticate::get_instance()->auth($args);
+        $ret = \TheTribalPlugin\Authenticate::get_instance()->auth($args);
 
 		return $ret;
     }
@@ -51,7 +51,7 @@ class User
 	{
 		$verifyArgs = $this->getAccountKeys();
 
-		return \TheTechTribeClient\Authenticate::get_instance()->auth($verifyArgs);
+		return \TheTribalPlugin\Authenticate::get_instance()->auth($verifyArgs);
 	}
 	
 	public function getAccountKeys()

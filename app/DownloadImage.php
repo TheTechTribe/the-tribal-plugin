@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 use WP_Error;
 //use DownloadRemoteImage;

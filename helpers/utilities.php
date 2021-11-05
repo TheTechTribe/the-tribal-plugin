@@ -35,10 +35,10 @@ if(!function_exists('ttt_dd')){
 if(!function_exists('tttResetDownloadStatusStartEnd')){
     function tttResetDownloadStatusStartEnd()
     {
-        \TheTechTribeClient\HealthStatus::get_instance()->importJobEnd([
+        \TheTribalPlugin\HealthStatus::get_instance()->importJobEnd([
             'action' => 'd',
         ]);
-        \TheTechTribeClient\HealthStatus::get_instance()->importJobStart([
+        \TheTribalPlugin\HealthStatus::get_instance()->importJobStart([
             'action' => 'd',
         ]);
     }
@@ -47,7 +47,7 @@ if(!function_exists('tttResetDownloadStatusStartEnd')){
 if(!function_exists('tttIsKeyActive')){
     function tttIsKeyActive()
     {
-        $isActive = \TheTechTribeClient\HealthStatus::get_instance()->isActive([
+        $isActive = \TheTribalPlugin\HealthStatus::get_instance()->isActive([
             'action' => 'r',
         ]);
 
@@ -62,7 +62,7 @@ if(!function_exists('tttIsKeyActive')){
 if(!function_exists('tttSetKeyActive')){
     function tttSetKeyActive($active = 0)
     {
-        \TheTechTribeClient\HealthStatus::get_instance()->isActive([
+        \TheTribalPlugin\HealthStatus::get_instance()->isActive([
             'action' => 'u',
             'value' => $active,
         ]);
@@ -83,14 +83,14 @@ function tttGetNextCronTime( $cron_name ){
 
 function tttGetNextCronTimeDate() {
     date_default_timezone_set(wp_timezone_string());
-    $nextSchedule = tttGetNextCronTime('ttt_user_cron_exec');
+    $nextSchedule = tttGetNextCronTime('ttt_user_cron_hook');
     //return ($nextSchedule) ? date_i18n('d F Y h:i A', $nextSchedule) : '';
     return ($nextSchedule) ? date('d F Y h:i A', $nextSchedule) : '';
 }
 
 function tttStartImport()
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->importJobStart([
+    \TheTribalPlugin\HealthStatus::get_instance()->importJobStart([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s') . ' : Start'
     ]);
@@ -98,7 +98,7 @@ function tttStartImport()
 
 function tttEndImport()
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->importJobEnd([
+    \TheTribalPlugin\HealthStatus::get_instance()->importJobEnd([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s') . ' : End'
     ]);
@@ -106,7 +106,7 @@ function tttEndImport()
 
 function tttLastDownload()
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->lastDownload([
+    \TheTribalPlugin\HealthStatus::get_instance()->lastDownload([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s')
     ]);
@@ -114,7 +114,7 @@ function tttLastDownload()
 
 function tttLastChecked()
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->lastChecked([
+    \TheTribalPlugin\HealthStatus::get_instance()->lastChecked([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s')
     ]);
@@ -122,7 +122,7 @@ function tttLastChecked()
 
 function tttLastCheckedStatus($code, $msg)
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->lastCheckedStatus([
+    \TheTribalPlugin\HealthStatus::get_instance()->lastCheckedStatus([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s') .' : '. $code . ' : ' . $msg
     ]);
@@ -130,7 +130,7 @@ function tttLastCheckedStatus($code, $msg)
 
 function tttLogReturn($ret = [])
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->importLogReturnPost([
+    \TheTribalPlugin\HealthStatus::get_instance()->importLogReturnPost([
         'action' => 'u',
         'value' => $ret
     ]);
@@ -138,7 +138,7 @@ function tttLogReturn($ret = [])
 
 function tttImportJobVia($via)
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->importJobVia([
+    \TheTribalPlugin\HealthStatus::get_instance()->importJobVia([
         'action' => 'u',
         'value' => date_i18n('Y/m/d H:i:s') . ' : ' . $via
     ]);
@@ -146,7 +146,7 @@ function tttImportJobVia($via)
 
 function tttVerifyChecked($code, $msg)
 {
-    \TheTechTribeClient\HealthStatus::get_instance()->verifyChecked([
+    \TheTribalPlugin\HealthStatus::get_instance()->verifyChecked([
         'action' => 'u',
         'value' => $code . ' : ' . $msg
     ]);
@@ -161,22 +161,22 @@ function tttRemoveInDbOptions()
 function tttInitCronJob()
 {
     if ( ! wp_next_scheduled( 'ttt_user_cron_hook' ) ) {
-		wp_schedule_event( time(), 'daily', 'ttt_user_cron_exec' );
+		wp_schedule_event( time(), 'daily', 'ttt_user_cron_hook' );
 	}
 }
 
 function tttRemoveCronJob()
 {
     $timestamp = wp_next_scheduled( 'ttt_user_cron_hook' );
-    wp_unschedule_event( $timestamp, 'ttt_user_cron_exec' );
+    wp_unschedule_event( $timestamp, 'ttt_user_cron_hook' );
 
-	wp_clear_scheduled_hook( 'ttt_user_cron_exec' );
+	wp_clear_scheduled_hook( 'ttt_user_cron_hook' );
 }
 
 function tttThrowTimeOutError($msg)
 {
     if(ttt_str_contains($msg, 'cURL error 28')) {
-        $ret = \TheTechTribeClient\StatusVerbage::get_instance()->get('general_error');
+        $ret = \TheTribalPlugin\StatusVerbage::get_instance()->get('general_error');
         return $ret['timeout'];
     }
     return false;
@@ -184,23 +184,23 @@ function tttThrowTimeOutError($msg)
 
 function tttThrowGeneralErrorMsg()
 {
-    $general = \TheTechTribeClient\StatusVerbage::get_instance()->get('general_error');
+    $general = \TheTribalPlugin\StatusVerbage::get_instance()->get('general_error');
     return $general['error'];
 }
 
 function tttGetAPIVerbage()
 {
-    return \TheTechTribeClient\StatusVerbage::get_instance()->get('api');
+    return \TheTribalPlugin\StatusVerbage::get_instance()->get('api');
 }
 
 function tttGetDomainVerbage()
 {
-    return \TheTechTribeClient\StatusVerbage::get_instance()->get('domain');
+    return \TheTribalPlugin\StatusVerbage::get_instance()->get('domain');
 }
 
 function tttGetACTagVerbage()
 {
-    return \TheTechTribeClient\StatusVerbage::get_instance()->get('ac_tag');
+    return \TheTribalPlugin\StatusVerbage::get_instance()->get('ac_tag');
 }
 
 function tttCustomLogs($log) { 

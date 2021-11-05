@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 class AttachImage
 {

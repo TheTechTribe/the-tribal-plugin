@@ -6,8 +6,8 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_Activator {
+class The_Tribal_Plugin_Activator {
 
 	/**
 	 * Short Description. (use period)

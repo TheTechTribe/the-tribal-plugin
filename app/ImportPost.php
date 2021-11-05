@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 use DateInterval;
 
@@ -44,7 +44,7 @@ class ImportPost
     {
         require_once ABSPATH . 'wp-admin/includes/post.php';
 
-        $statusVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('import');
+        $statusVerbage = \TheTribalPlugin\StatusVerbage::get_instance()->get('import');
 
         $ret = [
             'success' => false,
@@ -57,8 +57,6 @@ class ImportPost
         tttResetDownloadStatusStartEnd();
         
         tttStartImport();
-        
-        tttCustomLogs("start import posts : ");
 
         $countSuccess = 0;
 
@@ -146,7 +144,7 @@ class ImportPost
                         //download images, more of inline image in the content
                         if(is_array($postImages) && count($postImages) >= 1) {
                             foreach($postImages as $postImage) {
-                                $downloadImages = \TheTechTribeClient\DownloadImage::get_instance()->download([
+                                $downloadImages = \TheTribalPlugin\DownloadImage::get_instance()->download([
                                 	'file_url' => $postImage,
                                 	'parent_post_id' => $post_id
                                 ]);
@@ -163,7 +161,7 @@ class ImportPost
                         //download images, set as featured image
                         $postFeaturedImage = isset($post['meta']['images']['featured']['image']) ? $post['meta']['images']['featured']['image'] : '';
                         if(!empty($postFeaturedImage)) {
-                            $featuredAttachmentId = \TheTechTribeClient\DownloadImage::get_instance()->download([
+                            $featuredAttachmentId = \TheTribalPlugin\DownloadImage::get_instance()->download([
                             	'file_url' => $postFeaturedImage,
                             	'parent_post_id' => $post_id,
                                 'alt_text' => $post['meta']['images']['featured']['alt_text']
@@ -205,7 +203,6 @@ class ImportPost
             $ret['msg'] = $getPost->data['msg'];
             $ret['code'] = $getPost->data['code'];
             $ret['post_count_imported'] = $countSuccess;
-            tttCustomLogs("nothing to import : ");
         }
 
         if( $countSuccess > 0 ) {
@@ -214,10 +211,7 @@ class ImportPost
             $ret['msg'] = $statusVerbage['success']['msg'];
             $ret['code'] = 'success';
             $ret['post_count_imported'] = $countSuccess;
-
-            tttCustomLogs("import posts : ");
-            tttCustomLogs($ret);
-
+            
             tttLastDownload();
         }
 
@@ -228,7 +222,6 @@ class ImportPost
             $ret['msg'] = $apiVerbage['error']['msg'];
 
             tttSetKeyActive(0);
-			tttRemoveCronJob();
         }
 
         if(isset($ret['msg']) && $ret['msg'] == 'domain already used'){
@@ -237,7 +230,6 @@ class ImportPost
             $ret['msg'] = $domainVerbage['error']['msg'];
 
             tttSetKeyActive(0);
-			tttRemoveCronJob();
         }
 
         if(!empty($ret['summary']['exists']['post']) && count($ret['summary']['exists']['post']) > 0) {
@@ -255,11 +247,6 @@ class ImportPost
         tttEndImport();
 
         tttLogReturn($ret);
-
-        tttCustomLogs("return import posts : ");
-        tttCustomLogs($ret);
-        
-        tttCustomLogs("end import posts");
 
         return rest_ensure_response($ret);
     }

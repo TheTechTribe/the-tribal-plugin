@@ -10,7 +10,7 @@
  *
  * @link              thetechtribe.com
  * @since             0.1.0
- * @package           The_Tech_Tribe_Client
+ * @package           The_Tribal_Plugin
  *
  * @wordpress-plugin
  * Plugin Name:       The Tribal Plugin
@@ -21,7 +21,7 @@
  * Author URI:        thetechtribe.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       the-tech-tribe-client
+ * Text Domain:       the-tribal-plugin
  * Domain Path:       /languages
  */
 
@@ -35,39 +35,39 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TECH_TRIBE_CLIENT_VERSION', '0.11.0' );
+define( 'THE_TRIBAL_PLUGIN_VERSION', '0.11.0' );
 
 //date_default_timezone_set(wp_timezone_string());
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-the-tech-tribe-client-activator.php
+ * This action is documented in includes/class-the-tribal-plugin-activator.php
  */
-function activate_the_tech_tribe_client() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client-activator.php';
-	The_Tech_Tribe_Client_Activator::activate();
+function activate_the_tribal_plugin() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tribal-plugin-activator.php';
+	The_Tribal_Plugin_Activator::activate();
 	
 	tttInitCronJob();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-the-tech-tribe-client-deactivator.php
+ * This action is documented in includes/class-the-tribal-plugin-deactivator.php
  */
-function deactivate_the_tech_tribe_client() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client-deactivator.php';
-	The_Tech_Tribe_Client_Deactivator::deactivate();
+function deactivate_the_tribal_plugin() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-the-tribal-plugin-deactivator.php';
+	The_Tribal_Plugin_Deactivator::deactivate();
 
 	tttRemoveCronJob();
 }
 
-register_activation_hook( __FILE__, 'activate_the_tech_tribe_client' );
-register_deactivation_hook( __FILE__, 'deactivate_the_tech_tribe_client' );
+register_activation_hook( __FILE__, 'activate_the_tribal_plugin' );
+register_deactivation_hook( __FILE__, 'deactivate_the_tribal_plugin' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-the-tech-tribe-client.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-the-tribal-plugin.php';
 
 require plugin_dir_path( __FILE__ ) . 'helpers/utilities.php';
 
@@ -108,15 +108,15 @@ function tttc_get_plugin_dir_url() {
  *
  * @since    1.0.0
  */
-function run_the_tech_tribe_client() {
+function run_the_tribal_plugin() {
 
-	$plugin = new The_Tech_Tribe_Client();
+	$plugin = new The_Tribal_Plugin();
 	$plugin->run();
 	
-	\TheTechTribeClient\WPMenu::get_instance()->init();
-	\TheTechTribeClient\AjaxImportPost::get_instance()->init();
+	\TheTribalPlugin\WPMenu::get_instance()->init();
+	\TheTribalPlugin\AjaxImportPost::get_instance()->init();
 }
-add_action('plugins_loaded', 'run_the_tech_tribe_client');
+add_action('plugins_loaded', 'run_the_tribal_plugin');
 
 function ttt_init_client()
 {

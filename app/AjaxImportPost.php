@@ -1,5 +1,5 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
 class AjaxImportPost
 {
@@ -46,7 +46,9 @@ class AjaxImportPost
 
     public function import()
     {
-        $ret =  \TheTechTribeClient\ImportPost::get_instance()->import();
+		tttCustomLogs("start import posts : ");
+
+        $ret =  \TheTribalPlugin\ImportPost::get_instance()->import();
 		$returnCode = $ret->data['code'];
 		$returnMsg = $ret->data['msg'];
 		$returnMsgHeader = $ret->data['msg-header'] ?? '';
@@ -59,7 +61,7 @@ class AjaxImportPost
 
 		$msgContent = '';
 		if(isset($ret->data['summary']) && isset($ret->data['post_count_imported']) && $ret->data['post_count_imported'] > 0) {
-			$statusVerbage = \TheTechTribeClient\StatusVerbage::get_instance()->get('import');
+			$statusVerbage = \TheTribalPlugin\StatusVerbage::get_instance()->get('import');
 
 			$msgContent .= '<p>';
 			$msgContent .= '('. $ret->data['post_count_imported'].') '.$statusVerbage['imported']['msg'].' : ';
@@ -74,11 +76,11 @@ class AjaxImportPost
 			$msgContent .= '</ul>';
 		}
 
-		$getLastCheck = \TheTechTribeClient\HealthStatus::get_instance()->lastChecked([
+		$getLastCheck = \TheTribalPlugin\HealthStatus::get_instance()->lastChecked([
 			'action' => 'r',
 		]);
 		
-		$getLastImport = \TheTechTribeClient\HealthStatus::get_instance()->lastDownload([
+		$getLastImport = \TheTribalPlugin\HealthStatus::get_instance()->lastDownload([
 			'action' => 'r',
 		]);
 		
@@ -97,6 +99,11 @@ class AjaxImportPost
 			'last_check' 				=> date_i18n('d F Y h:i A', strtotime($getLastCheck)),
 			'last_successfull_import' 	=> $dateGetLastImport
 		];
+
+		tttCustomLogs("return import posts : ");
+        tttCustomLogs($ret);
+
+		tttCustomLogs("end import posts");
 
 		wp_send_json_error($arrReturnMsg);
     }

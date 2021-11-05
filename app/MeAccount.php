@@ -1,7 +1,7 @@
 <?php
-namespace TheTechTribeClient;
+namespace TheTribalPlugin;
 
-use TheTechTribeClient\APIPortal;
+use TheTribalPlugin\APIPortal;
 use WP_Error;
 use WP_REST_Response;
 
@@ -51,7 +51,7 @@ class MeAccount
 			$urlAPIPortal = new APIPortal();
 			$url = $urlAPIPortal->url() . 'me';
 
-			$userAccountKeys = \TheTechTribeClient\User::get_instance()->getAccountKeys();
+			$userAccountKeys = \TheTribalPlugin\User::get_instance()->getAccountKeys();
 
 			$response = wp_remote_post( $url, [
 				'timeout'   => 45,

@@ -6,7 +6,7 @@
             <div class="dashboard-alert">
                 <?php 
                     if($retUpdate) {
-                        \TheTechTribeClient\ShowAlert::get_instance()->show($alertArgs); 
+                        \TheTribalPlugin\ShowAlert::get_instance()->show($alertArgs); 
                     }
                 ?>
             </div>

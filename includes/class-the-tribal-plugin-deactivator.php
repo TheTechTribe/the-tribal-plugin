@@ -1,14 +1,14 @@
 <?php
-use TheTechTribeClient\WPOptions;
-use TheTechTribeClient\HealthStatus;
+use TheTribalPlugin\WPOptions;
+use TheTribalPlugin\HealthStatus;
 /**
  * Fired during plugin deactivation
  *
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  */
 
 /**
@@ -17,11 +17,11 @@ use TheTechTribeClient\HealthStatus;
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    The_Tech_Tribe_Client
- * @subpackage The_Tech_Tribe_Client/includes
+ * @package    The_Tribal_Plugin
+ * @subpackage The_Tribal_Plugin/includes
  * @author     Nigel Moore <help@thetechtribe.com>
  */
-class The_Tech_Tribe_Client_Deactivator {
+class The_Tribal_Plugin_Deactivator {
 
 	/**
 	 * Short Description. (use period)

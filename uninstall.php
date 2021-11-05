@@ -22,7 +22,7 @@
  * @link       thetechtribe.com
  * @since      1.0.0
  *
- * @package    The_Tech_Tribe_Client
+ * @package    The_Tribal_Plugin
  */
 
 // If uninstall not called from WordPress, then exit.
