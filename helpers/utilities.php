@@ -217,3 +217,13 @@ function tttCustomLogs($log) {
         fclose($file); 
     }
 }
+
+function tttCustomLogsDelete() {
+    $upload_dir = wp_upload_dir();
+
+    $file = $upload_dir['basedir'] . '/ttt-logs.log'; 
+
+    if(file_exists($file)){
+        unlink($file);
+    }
+}

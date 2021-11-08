@@ -58,6 +58,7 @@ function deactivate_the_tribal_plugin() {
 	The_Tribal_Plugin_Deactivator::deactivate();
 
 	tttRemoveCronJob();
+	tttCustomLogsDelete();
 }
 
 register_activation_hook( __FILE__, 'activate_the_tribal_plugin' );

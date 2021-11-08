@@ -47,6 +47,7 @@ class AjaxImportPost
     public function import()
     {
 		tttCustomLogs("start import posts : ");
+		tttCustomLogs("manual import ");
 
         $ret =  \TheTribalPlugin\ImportPost::get_instance()->import();
 		$returnCode = $ret->data['code'];
