@@ -5,7 +5,7 @@
         <div class="container-ttt-content">
             <div class="row">
                 <div class="col-md-3">Last Check: </div>
-                <div class="col-md-8"><span class="last-check"><?php echo ($lastChecked && !empty($lastChecked)) ? date_i18n('d F Y h:i A', strtotime($lastChecked)) : '';?></span></div>
+                <div class="col-md-8"><span class="last-check"><?php echo ($lastChecked && !empty($lastChecked)) ? date('d F Y h:i A', strtotime($lastChecked)) : '';?></span></div>
             </div>
             <div class="row">
                 <div class="col-md-3">Next Schedule Check: </div>
@@ -13,7 +13,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3">Last Successfull Import: </div>
-                <div class="col-md-8"><span class="last-success-import"><?php echo ($lastDownload && !empty($lastDownload)) ? date_i18n('d F Y h:i A', strtotime($lastDownload)) : '';?></span></div>
+                <div class="col-md-8"><span class="last-success-import"><?php echo ($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?></span></div>
             </div>
 
             <div class="import-ajax-status"></div>

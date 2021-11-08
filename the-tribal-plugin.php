@@ -18,7 +18,7 @@
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
  * Version:           0.11.0
  * Author:            The Tech Tribe
- * Author URI:        thetechtribe.com
+ * Author URI:        https://nigel.me/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       the-tribal-plugin
