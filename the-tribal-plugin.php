@@ -122,9 +122,7 @@ function ttt_init_client()
 {
 	if(!is_admin())
 	{
-		// tttCustomLogs("Hey! I am in a header");
-		// $arr = ["foo", "bar"];
-		// tttCustomLogs($arr);
+
 	}
 }
 add_action('init', 'ttt_init_client');
