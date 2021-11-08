@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: nigelmoore1
 Donate link: thetechtribe.com
 Tags: comments, spam
 Requires at least: 5.8
@@ -8,62 +8,49 @@ Stable tag: 0.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+The Tribal Plugin allows Tech Tribe members to automatically post Blog content to their Wordpress website.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+The Tribal Plugin allows members of the Tech Tribe to automatically post blog content to their website from the Monthly Marketing Packs included in their Membership. 
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+It allows members to:
 
-A few notes about the sections above:
+* Set what Author they want as Default on all the Posts
+* Decide between Automatic posting or Manual posting in case they want to check first
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+You can find out more about The Tech Tribe at: https://thetechtribe.com/
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+Simply follow these steps:
 
-e.g.
-
-1. Upload `the-tribal-plugin.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Install the Plugin from the Wordpress Marketplace
+2. Activate the Plugin through the 'Plugins' menu in Wordpress
+3. Go to the main page of the Plugin and paste in your API Key to Verify
+(your API Key can be found at https://portal.thetechtribe.com/my-tribe-account)
+4. Once it has been activated, go to the Settings tab and select your Default Author and whether you want your posts to be published Automatically or Manually
+5. If you want to kick off a Manual Import, click on the Import Tab and click the "START MANUAL IMPORT" button 
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= What is the Tech Tribe? =
 
-An answer to that question.
+The Tech Tribe is a program & community for the owners of MSP & IT Support Businesses chock full of resources, templates & workshops to help MSPs & ITSPs better run & grow their business. 
 
-= What about foo bar? =
+You can find out more at https://thetechtribe.com/
 
-Answer to foo bar dilemma.
+= Where can I get Help or Support? =
 
-== Screenshots ==
+Simply shoot an email to help@thetechtribe.com if you ever need any assistance. 
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+If you're having an error, make sure to include screenshots and any details that might help us work out what is going wrong. 
+
+= What does this plugin do? =
+
+One of the benefits our Tech Tribe members get every month is freshly written blog posts that they can use in their Marketing.
+
+This plugin automatically pulls down those Blog Posts and publishes them on their site so they don't have to lift a finger in the publishing process. 
 
 == Changelog ==
 
