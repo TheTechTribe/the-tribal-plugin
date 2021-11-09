@@ -137,8 +137,8 @@ class ImportPost
                                 'post_id'       => $post_id
                             ];
                             $category_id = $this->insertTaxonomy($arrInsertTaxonomy);
-                            if($category_id != 0){
-                                wp_set_object_terms( $post_id, intval( $category_id ), $taxonomy );
+                            if($category_id != 0 || is_array($category_id)){
+                                wp_set_object_terms( $post_id, $category_id, $taxonomy );
                             }
                         }
                         //insert category
@@ -280,7 +280,7 @@ class ImportPost
         $categoryFromPress = $args['categories'] ?? [];
         $taxonomy = $args['taxonomy'] ?? 'category';
         $postId = $args['post_id'] ?? false;
-        $term_id = 0;
+        $term_id = [];
         if(!empty($categoryFromPress) && $postId){
             foreach($categoryFromPress as $category) {
                 $termName = $category;
@@ -288,10 +288,10 @@ class ImportPost
                 if(!$category){
                     //create the term/category
                 	$retCat = wp_insert_term($termName, $taxonomy);
-                    $term_id = $retCat['term_id'];
+                    $term_id[] = $retCat['term_id'];
                 }else{
                     //get the term/category
-                    $term_id = $category->term_id;
+                    $term_id[] = $category->term_id;
                 }
             }
        }

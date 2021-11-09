@@ -28,7 +28,7 @@
         <select class="form-select" aria-label="Default select author" name="ttt_post_author">
             <?php foreach($users as $user) : ?>
                 <option value="<?php echo $user->ID;?>" <?php echo ($defaultAuthor == $user->ID) ? 'selected':'';?>>
-                    <?php echo $user->display_name;?>
+                    <?php esc_html_e($user->display_name);?>
                 </option>
             <?php endforeach; ?>
         </select>

@@ -1,9 +1,9 @@
-<div class="alert alert-<?php echo $args['alert']; ?> <?php echo $args['close'] ?? 'alert-dismissible fade show';?>" role="alert">
+<div class="alert alert-<?php esc_html_e($args['alert']); ?> <?php esc_html_e($args['close']) ?? 'alert-dismissible fade show';?>" role="alert">
 
 <h4 class="alert-heading ttt-show-alert-error-code"><?php echo ($args['msg-header'] != '') ? $args['msg-header'] : $args['code']; ?></h4>
-  <?php echo $args['msg']; ?>
+  <?php esc_html_e($args['msg']); ?>
   <div class="msg-content">
-    <?php echo $args['msg-content']; ?>
+    <?php esc_html_e($args['msg-content']); ?>
   </div>
   
   <?php if($args['close']) : ?>

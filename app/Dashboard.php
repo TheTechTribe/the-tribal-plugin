@@ -197,14 +197,13 @@ class Dashboard
 				isset($request['ttt_publish_post'])
 				|| isset($request['ttt_post_author'])
 			) {
-				$publishPosts 	= $request['ttt_publish_post'];
-
+				$publishPosts 	= sanitize_text_field($request['ttt_publish_post']);
 				WPOptions::get_instance()->publishPosts([
 					'action' 	=> 'u',
 					'value' 	=> $publishPosts
 				]);
 				
-				$defaultAuthor 	= $request['ttt_post_author'];
+				$defaultAuthor 	= sanitize_text_field($request['ttt_post_author']);
 				WPOptions::get_instance()->defaultAuthor([
 					'action' 	=> 'u',
 					'value' 	=> $defaultAuthor
@@ -233,7 +232,7 @@ class Dashboard
 				isset($request['ttt_api_key']) 
 				&& !empty(trim($request['ttt_api_key'])) 
 			){
-				$apiKey	= $request['ttt_api_key'];
+				$apiKey	= sanitize_text_field($request['ttt_api_key']);
 				$apiVerbage = tttGetAPIVerbage();
 				
 				//verify the auth
@@ -247,7 +246,7 @@ class Dashboard
 				//insert api key
 				WPOptions::get_instance()->apiKey([
 					'action' 	=> 'u',
-					'value' 	=> $_POST['ttt_api_key']
+					'value' 	=> $apiKey
 				]);
 				
 				//insert domain used
