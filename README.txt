@@ -56,7 +56,6 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 
 = 0.12.0 =
 * Improve the data sanitization both output and input.
-* Update the name of the plugin to "the tech tribe" along with the slug or filename to the-tech-tribe.
 * Update the 3rd party assets.
 * Improve the importing posts with categories, accept multiple categories.
 
