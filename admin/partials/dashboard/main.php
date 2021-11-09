@@ -1,6 +1,6 @@
 <div class="wrap">
     <div class="bootstrap-iso">
-        <h1>The Tribal Plugin</h1>
+        <h1>The Tech Tribe</h1>
         <div class="form form-dashboard-user col-md-8">
            
             <div class="dashboard-alert">

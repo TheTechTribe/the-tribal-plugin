@@ -8,11 +8,11 @@ Stable tag: 0.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The Tribal Plugin allows Tech Tribe members to automatically post Blog content to their Wordpress website.
+The Tech Tribe plugin allows Tech Tribe members to automatically post Blog content to their Wordpress website.
 
 == Description ==
 
-The Tribal Plugin allows members of the Tech Tribe to automatically post blog content to their website from the Monthly Marketing Packs included in their Membership. 
+The Tech Tribe plugin allows members of the Tech Tribe to automatically post blog content to their website from the Monthly Marketing Packs included in their Membership. 
 
 It allows members to:
 
@@ -58,6 +58,7 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 * Improve status notification.
 * Seperate API Key to its own tab.
 * Remove extra carriage return in the content.
+* Add log for debug purposes.
 
 = 0.10.0 =
 * Fix inline image in the content, wherein the path is not changed according to the wordpress media settings.

@@ -49,8 +49,8 @@ class WPMenu
     public function adminMenu()
     {
         add_menu_page(
-            'The Tribal Plugin',
-            'The Tribal Plugin',
+            'The Tech Tribe',
+            'The Tech Tribe',
             'manage_options',
             'the-tribal-plugin',
             [new Dashboard, 'init'],
