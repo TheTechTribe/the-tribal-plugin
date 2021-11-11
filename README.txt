@@ -81,29 +81,29 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 = 0.8.1 =
 * Add end line attribute on each of the end of content.
 
-= 0.0.8 =
+= 0.8.0 =
 * Fix the next schedule display.
 * Update the text label in date Import status tab.
 * Fix the settings update, if publish post and author only changed then update that changes only.
 
-= 0.0.5 =
+= 0.5.0 =
 * Update status verbage when success.
 
-= 0.0.4 =
+= 0.4.0 =
 * Add next schedule cron to be display.
 
-= 0.0.3 =
+= 0.3.0 =
 * Updated the UI to make it just two tabs, settings and import manual.
 
-= 0.0.2 =
+= 0.2.0 =
 * Created the UI page settings.
 
-= 0.0.1 =
+= 0.1.0 =
 * Bootstrap Build of the plugin.
 
 == Upgrade Notice ==
 
-= 0.1 =
+= 0.1.0 =
 Beta version.
 
 == Arbitrary section ==
