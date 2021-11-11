@@ -1,10 +1,11 @@
-=== Plugin Name ===
-Contributors: nigelmoore1
+=== The Tech Tribe ===
+Contributors: nigelmoore1, allan.casilum
 Donate link: thetechtribe.com
 Tags: comments, spam
-Requires at least: 5.8
+Requires at least: 5.0
 Tested up to: 5.8
 Stable tag: 0.12.0
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +53,10 @@ One of the benefits our Tech Tribe members get every month is freshly written bl
 
 This plugin automatically pulls down those Blog Posts and publishes them on their site so they don't have to lift a finger in the publishing process. 
 
+== Screenshots ==
+
+1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
+
 == Changelog ==
 
 = 0.12.0 =
@@ -97,6 +102,9 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 * Bootstrap Build of the plugin.
 
 == Upgrade Notice ==
+
+= 0.1 =
+Beta version.
 
 == Arbitrary section ==
 
