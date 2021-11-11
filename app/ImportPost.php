@@ -81,6 +81,7 @@ class ImportPost
             
             $dataPost = $getPost->data['posts']['posts'];
             $blogUrl = $getPost->data['posts']['current_post_url'];
+            $blogName = $getPost->data['posts']['current_blog_name'];
             
             $publishPostSetting = WPOptions::get_instance()->publishPosts();
             
@@ -180,10 +181,7 @@ class ImportPost
                         //update the post
                         //$postContent = str_replace($blogUrl, site_url(), $post['content']);
                         $postContent = str_replace($searchImageToReplaces, $actualImageToReplaces, $post['content']);
-                        $postContent .= '<p>';
-                        $postContent .= '<p>';
-                        $postContent .= '<p>';
-                        $postContent .= '<p>Article originally appeared on <a href="'.$post['get_the_permalink'].'" target="_blank">The Technology Press</a> and used with permission.</p>';
+                        $postContent .= '<p>This Article has been Republished with Permission from <a rel="canonical" href="'.$post['get_the_permalink'].'" title="'.$post['title'].'" target="_blank">'.$blogName.'.</a></p>';
 
                         //remove extra carraige returns
                         $postContent = str_replace(["\n", "\r"], '', $postContent);

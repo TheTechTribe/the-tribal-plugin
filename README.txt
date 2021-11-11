@@ -1,10 +1,10 @@
 === The Tech Tribe ===
-Contributors: nigelmoore1, allan.casilum
+Contributors: nigelmoore1
 Donate link: thetechtribe.com
 Tags: comments, spam
 Requires at least: 5.0
 Tested up to: 5.8
-Stable tag: 0.12.0
+Stable tag: 1.0.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,49 +59,53 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 
 == Changelog ==
 
-= 0.12.0 =
-* Improve the data sanitization both output and input.
-* Update the 3rd party assets.
-* Improve the importing posts with categories, accept multiple categories.
+= 1.0.0 - 11th November 2021 = 
+* Going from Private BETA to First Public Version
+* Changed the automatic Rel-Canonical & Link-Back Attribution Line
+* Updated Error Log Filename
+* More features to come :)
 
-= 0.11.0 =
+= 0.11.0 - Beta =
 * Improve status notification.
 * Seperate API Key to its own tab.
 * Remove extra carriage return in the content.
 * Add log for debug purposes.
+* Improve the data sanitization both output and input.
+* Update the 3rd party assets.
+* Improve the importing posts with categories, accept multiple categories.
 
-= 0.10.0 =
+= 0.10.0 - Beta =
 * Fix inline image in the content, wherein the path is not changed according to the wordpress media settings.
 
-= 0.9.1 =
+= 0.9.1 - Beta =
 * Update notification message when no blogs to import.
 * Added progress status when importing blogs.
 * Improve activating and deactivating cron jobs, set cron jobs only if the status is active and remove if not.
 
-= 0.8.1 =
+= 0.8.1 - Beta =
 * Add end line attribute on each of the end of content.
 
-= 0.8.0 =
+= 0.8.0 - Beta =
 * Fix the next schedule display.
 * Update the text label in date Import status tab.
 * Fix the settings update, if publish post and author only changed then update that changes only.
 
-= 0.5.0 =
+= 0.5.0 - Beta =
 * Update status verbage when success.
 
-= 0.4.0 =
+= 0.4.0 - Beta =
 * Add next schedule cron to be display.
 
-= 0.3.0 =
+= 0.3.0 - Beta =
 * Updated the UI to make it just two tabs, settings and import manual.
 
-= 0.2.0 =
+= 0.2.0 - Beta =
 * Created the UI page settings.
 
-= 0.1.0 =
+= 0.1.0 - Beta =
 * Bootstrap Build of the plugin.
 
 == Upgrade Notice ==
 
-= 0.1.0 =
+= 0.1.0 - Beta =
 Beta version.

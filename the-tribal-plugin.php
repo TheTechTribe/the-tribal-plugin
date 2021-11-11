@@ -16,7 +16,7 @@
  * Plugin Name:       The Tech Tribe
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
- * Version:           0.12.0
+ * Version:           1.0.0
  * Author:            The Tech Tribe
  * Author URI:        https://thetechtribe.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'THE_TRIBAL_PLUGIN_VERSION', '0.12.0' );
+define( 'THE_TRIBAL_PLUGIN_VERSION', '1.0.0' );
 
 //date_default_timezone_set(wp_timezone_string());
 /**

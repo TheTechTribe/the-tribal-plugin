@@ -209,7 +209,7 @@ function tttCustomLogs($log) {
     }
     $upload_dir = wp_upload_dir();
 
-    $file = $upload_dir['basedir'] . '/ttt-logs.log'; 
+    $file = $upload_dir['basedir'] . '/The-Tribal-Plugin.log'; 
 
     if(is_writable($upload_dir['basedir'])){
         $file = fopen($file,"a"); 
@@ -221,7 +221,7 @@ function tttCustomLogs($log) {
 function tttCustomLogsDelete() {
     $upload_dir = wp_upload_dir();
 
-    $file = $upload_dir['basedir'] . '/ttt-logs.log'; 
+    $file = $upload_dir['basedir'] . '/The-Tribal-Plugin.log';
 
     if(file_exists($file)){
         unlink($file);
