@@ -1,7 +1,7 @@
-=== The Tech Tribe ===
+=== The Tribal Plugin ===
 Contributors: nigelmoore1
 Donate link: thetechtribe.com
-Tags: comments, spam
+Tags: techtribe, content, syndication
 Requires at least: 5.0
 Tested up to: 5.8.2
 Stable tag: 1.0.0
@@ -108,4 +108,4 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 == Upgrade Notice ==
 
 = 0.1.0 - Beta =
-Beta version.
+* Beta version.

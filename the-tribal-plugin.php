@@ -13,7 +13,7 @@
  * @package           The_Tech_Tribe
  *
  * @wordpress-plugin
- * Plugin Name:       The Tech Tribe
+ * Plugin Name:       The Tribal Plugin
  * Plugin URI:        thetechtribe.com
  * Description:       This plugin is for members of The Tech Tribe to manage features such as Automated Blog Posting etc.
  * Version:           1.0.0
