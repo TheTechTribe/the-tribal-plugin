@@ -227,3 +227,14 @@ function tttCustomLogsDelete() {
         unlink($file);
     }
 }
+
+function tttAllowedAdminAssetInclude()
+{
+    $currentScreen = get_current_screen();
+    $arrAllowedPage = ['toplevel_page_the-tribal-plugin'];
+	
+    if( in_array($currentScreen->base, $arrAllowedPage) && ! is_customize_preview() ){
+        return true;
+    }
+
+}

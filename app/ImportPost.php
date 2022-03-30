@@ -203,7 +203,10 @@ class ImportPost
             }
         }else{
             $ret['success'] = true;
-            $ret['msg'] = $getPost->data['msg'];
+            $ret['msg-header'] = $statusVerbage['nothing']['header'];
+            $ret['msg'] = $statusVerbage['nothing']['msg'];
+            //$ret['msg'] = isset($getPost->data['msg']) ? $getPost->data['msg'] : '';
+            //$ret['code'] = isset($getPost->data['code']) ? $getPost->data['code'] : '';
             $ret['code'] = $getPost->data['code'];
             $ret['post_count_imported'] = $countSuccess;
         }
@@ -231,6 +234,7 @@ class ImportPost
         }
 
         if(isset($ret['msg']) && $ret['msg'] == 'domain already used'){
+            //echo '4';
             $domainVerbage = tttGetDomainVerbage();
             $ret['msg-header'] = $domainVerbage['error']['header'];
             $ret['msg'] = $domainVerbage['error']['msg'];

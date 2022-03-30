@@ -3,8 +3,8 @@ Contributors: nigelmoore1
 Donate link: thetechtribe.com
 Tags: techtribe, content, syndication
 Requires at least: 5.0
-Tested up to: 5.8.2
-Stable tag: 1.0.0
+Tested up to: 5.9.2
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -59,7 +59,10 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 
 == Changelog ==
 
-= 1.0.0 - 11th November 2021 = 
+= 1.1.0 - March 03, 2022 =
+* Fix the js and css to include only on the The Tech Tribe page only, to avoid conflict on WordPress Customize tool and other potential plugin conflicts.
+
+= 1.0.0 - November 11, 2021 = 
 * Going from Private BETA to First Public Version
 * Changed the automatic Rel-Canonical & Link-Back Attribution Line
 * Updated Error Log Filename
