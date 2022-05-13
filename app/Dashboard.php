@@ -44,7 +44,7 @@ class Dashboard
     public function init()
     {
 		$retUpdate = $this->update();
-		
+
 		if($retUpdate) {
 			$alertArgs = [
 				'alert' => ($retUpdate['code'] == 'error') ? 'danger':'success',
@@ -113,12 +113,14 @@ class Dashboard
 			];
 
 			$updateSync = $this->updateSync($_POST);
+						
 			if($updateSync){
 				return $updateSync;
 			}
 
 			if( isset($_POST['ttt_api_key']) && trim($_POST['ttt_api_key']) != '' ) {
 				$updateApiKey = $this->updateAPIKey($_POST);
+
 				if( $updateApiKey )
 				{
 					return $updateApiKey;
@@ -191,6 +193,7 @@ class Dashboard
 
 	private function updateSync($request)
 	{
+		
 		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_update_dashboard_user' ){
 			$arrReturnMsg['action'] = true;
 			if(
@@ -258,7 +261,7 @@ class Dashboard
 				$returnCode = $ret->data['code'] ?? 'error';
 				$returnMsg = $ret->data['msg'] ?? '';
 				$returnMsgHeader = $ret->data['msg-header'] ?? '';
-
+	
 				if(isset($ret->data['code']) && ! $ret->data['success']) {
 					$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 					$returnCode = (!$ret->data['success']) ? 'error':'';
@@ -288,8 +291,8 @@ class Dashboard
 
 				if(!isset($ret->data['code']) && !is_array($ret->data)){
 					$returnMsg = $ret->data;
-					
-					$getTimeOutErrror = tttThrowTimeOutError($returnMsg);
+
+					$getTimeOutErrror = tttThrowGeneralErrorMsg($returnMsg);
 					if($getTimeOutErrror){
 						$returnMsgHeader = $getTimeOutErrror['header'];
 						$returnMsg = $getTimeOutErrror['msg'];
