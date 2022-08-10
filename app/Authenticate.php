@@ -69,6 +69,12 @@ class Authenticate
 		$resCode = wp_remote_retrieve_response_code($response);
 		tttCustomLogs("api return code : " . $resCode);
 
+		$ip_server = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : 'No Server IP Address';
+		tttCustomLogs("Server IP Address : " . $ip_server);
+
+		$getUserIP = tttGetTheUserIp();
+		tttCustomLogs("User IP Address : " . $getUserIP);
+
 		$resBody = wp_remote_retrieve_body($response);
 		tttCustomLogs("api return body : ");
 		tttCustomLogs($resBody);
