@@ -4,7 +4,7 @@ Donate link: thetechtribe.com
 Tags: techtribe, content, syndication
 Requires at least: 5.0
 Tested up to: 6.0.1
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,10 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
 
 == Changelog ==
+
+= 1.2.1 - September 02, 2022 =
+* Improve the logs.
+* Change log date to have UTC and local time.
 
 = 1.2.0 - August 08, 2022 =
 * Improve logs for further troubleshoot.

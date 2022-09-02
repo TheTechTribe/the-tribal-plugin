@@ -212,8 +212,12 @@ function tttCustomLogs($log) {
     $file = $upload_dir['basedir'] . '/The-Tribal-Plugin.log'; 
 
     if(is_writable($upload_dir['basedir'])){
-        $file = fopen($file,"a"); 
-        fwrite($file, "\n" . date_i18n('Y-m-d h:i:s') . " :: " . $log); 
+        $file = fopen($file,"a");
+        $dateTime = date("Y-m-d H:i:s"); 
+        $newDateTime = new DateTime($dateTime); 
+        $newDateTime->setTimezone(new DateTimeZone("UTC")); 
+        $dateTimeUTC = $newDateTime->format("Y-m-d H:i:s");
+        fwrite($file, "\n" ."(UTC) " . $dateTimeUTC . " | Local Time - " . wp_date('Y-m-d H:i:s') . ' :: ' . $log); 
         fclose($file); 
     }
 }

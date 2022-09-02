@@ -53,17 +53,12 @@ class Post
 		$ret = '';
 		$apiKey = WPOptions::get_instance()->apiKey();
 		
-		tttCustomLogs("api key ");
-		tttCustomLogs($apiKey);
-
 		if($apiKey != '') {
 			tttCustomLogs("api key not empty");
 
 			//move this to function
 			$userAccountKeys = \TheTribalPlugin\User::get_instance()->getAccountKeys();
-			tttCustomLogs("userAccountKeys");
-			tttCustomLogs($userAccountKeys);
-
+			
 			$userAccountKeys['date_import_blog'] = \TheTribalPlugin\WPOptions::get_instance()->dateImportBlog();
 			
 			$postBodyArgs = [
