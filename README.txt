@@ -61,7 +61,8 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 
 = 1.2.2 - October 11, 2023 =
 * Maintenance update.
-* Improve logs.
+* Test in WordPress version 6.3.1
+* Improve logs, remove unnecessary log.
 
 = 1.2.1 - September 02, 2022 =
 * Improve the logs.
