@@ -133,7 +133,7 @@
 				});
 				
 				request.done(function( msg ) {
-					//console.log(msg);
+					console.log(msg);
 					toggleAlertHTML(true, ajaxShowAlert(msg));
 					toggleAjaxStatusHTML(false);
 					

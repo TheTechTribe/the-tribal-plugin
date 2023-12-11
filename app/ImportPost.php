@@ -67,6 +67,11 @@ class ImportPost
         //insert the post
         $post = new Post;
         $getPost = $post->get($args);
+        
+        tttCustomLogs('getPost');
+        tttCustomLogs($getPost);
+        tttCustomLogs($ret);
+        tttCustomLogs('getPost');
 
         if( 
             $getPost->status == 200 
@@ -76,7 +81,9 @@ class ImportPost
             && isset($getPost->data['code'])
             && $getPost->data['code'] != 'error'
             && $getPost->data['posts']['total_post'] >= 1
+            && $getPost->data['success'] == true
         ) {
+            tttCustomLogs("start post data import ");
             $timezone_offset = get_option( 'gmt_offset' );
             
             $dataPost = $getPost->data['posts']['posts'];
@@ -201,12 +208,11 @@ class ImportPost
                     $ret['summary']['exists']['post'][]['title'] = $post['title'];
                 }
             }
-        }else{
-            $ret['success'] = true;
-            $ret['msg-header'] = $statusVerbage['nothing']['header'];
-            $ret['msg'] = $statusVerbage['nothing']['msg'];
-            //$ret['msg'] = isset($getPost->data['msg']) ? $getPost->data['msg'] : '';
-            //$ret['code'] = isset($getPost->data['code']) ? $getPost->data['code'] : '';
+        }
+        else{
+            $ret['success'] = $getPost->data['success'];
+            $ret['msg-header'] = $getPost->data['headers'];
+            $ret['msg'] = $getPost->data['msg'];
             $ret['code'] = $getPost->data['code'];
             $ret['post_count_imported'] = $countSuccess;
         }
@@ -253,7 +259,7 @@ class ImportPost
 
             tttCustomLogs("nothing to import ");
         }
-
+        
         tttLastChecked();
         
         tttLastCheckedStatus($ret['code'], $ret['msg']);

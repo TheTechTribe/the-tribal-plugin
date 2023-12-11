@@ -50,6 +50,10 @@ class AjaxImportPost
 		tttCustomLogs("manual import ");
 
         $ret =  \TheTribalPlugin\ImportPost::get_instance()->import();
+		tttCustomLogs("manual import ret");
+		tttCustomLogs($ret);
+		tttCustomLogs("manual import ret");
+		
 		$returnCode = $ret->data['code'];
 		$returnMsg = $ret->data['msg'];
 		$returnMsgHeader = $ret->data['msg-header'] ?? '';
