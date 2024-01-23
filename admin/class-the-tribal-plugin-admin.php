@@ -75,7 +75,7 @@ class The_Tribal_Plugin_Admin {
 
 		if( tttAllowedAdminAssetInclude() ){
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/the-tribal-plugin-admin.css', array(), $this->version, 'all' );
-			wp_enqueue_style( $this->plugin_name . 'bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/css/bootstrap-iso-v5.1.3.min.css', array(), '5.1.3', 'all' );
+			wp_enqueue_style( $this->plugin_name . '-bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/css/bootstrap-iso-v5.3.2.min.css', array(), '5.3.2', 'all' );
 		}
 
 	}
@@ -100,7 +100,7 @@ class The_Tribal_Plugin_Admin {
 		 */
 		if( tttAllowedAdminAssetInclude() ){
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/the-tribal-plugin-admin.js', array( 'jquery' ), $this->version, false );
-			wp_enqueue_script( $this->plugin_name . 'bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/js/bootstrap-v5.1.3-.bundle.min.js', array( 'jquery' ), '5.1.3', false );
+			wp_enqueue_script( $this->plugin_name . '-bootstrap-5-iso', tttc_get_plugin_dir_url() . 'assets/js/bootstrap-v5.3.2.bundle.min.js', array( 'jquery' ), '5.3.2', false );
 			wp_localize_script( $this->plugin_name, 'ttt_admin_ajax_object',
 				[
 					'plugin_url' => tttc_get_plugin_dir_url(),
