@@ -60,7 +60,8 @@ class AjaxImportPost
 		$msgContent = '';
 
 		if(isset($ret->data['code']) && ! $ret->data['success']) {
-			$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
+			$rawMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
+			$returnMsg = esc_html($rawMsg);
 			$returnCode = (!$ret->data['success']) ? 'error':'';
 		}
 
@@ -75,7 +76,7 @@ class AjaxImportPost
 			$msgContent .= '<ul>';
 			foreach($ret->data['summary']['post'] as $post) {
 				$msgContent .= '<li>';
-				$msgContent .= $post['title'];
+				$msgContent .= esc_html($post['title']);
 				$msgContent .= '</li>';
 			}
 			$msgContent .= '</ul>';

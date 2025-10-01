@@ -58,6 +58,8 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
 
 == Changelog ==
+= 1.3.4 October 1, 2025 =
+* Maintenance Security Update
 
 = 1.3.3 January 31, 2025 =
 * Update bootstrap library to version 5.3.3
