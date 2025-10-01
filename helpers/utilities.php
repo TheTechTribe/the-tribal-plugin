@@ -207,18 +207,29 @@ function tttCustomLogs($log) {
     if(is_array($log) || is_object($log)) { 
         $log = json_encode($log);
     }
-    $upload_dir = wp_upload_dir();
+    // Try secure location first
+    $log_dir = ABSPATH . '../logs';    
+    if (!is_dir($log_dir)) {
+        mkdir($log_dir, 0755, true);
+    }
+    if (!is_writable($log_dir)) {
+        // Fallback to uploads if secure location is not writable
+        $upload_dir = wp_upload_dir();
+        $log_dir = $upload_dir['basedir'];
+    }
+    $file = $log_dir . '/The-Tribal-Plugin.log';
 
-    $file = $upload_dir['basedir'] . '/The-Tribal-Plugin.log'; 
-
-    if(is_writable($upload_dir['basedir'])){
-        $file = fopen($file,"a");
+    if(is_writable($log_dir)){
+        $file_handle = fopen($file,"a");
         $dateTime = date("Y-m-d H:i:s"); 
         $newDateTime = new DateTime($dateTime); 
         $newDateTime->setTimezone(new DateTimeZone("UTC")); 
         $dateTimeUTC = $newDateTime->format("Y-m-d H:i:s");
-        fwrite($file, "\n" ."(UTC) " . $dateTimeUTC . " | Local Time - " . wp_date('Y-m-d H:i:s') . ' :: ' . $log); 
-        fclose($file); 
+        fwrite($file_handle, "\n" ."(UTC) " . $dateTimeUTC . " | Local Time - " . wp_date('Y-m-d H:i:s') . ' :: ' . $log); 
+        fclose($file_handle); 
+    } else {
+        // Failsafe: Log to PHP error log if no directory is writable
+        error_log('The-Tribal-Plugin: ' . $log);
     }
 }
 
