@@ -1,7 +1,7 @@
 <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#api-key');?>" method="post" class="dashboard-form">
     <div class="mb-3">
         <label class="form-label">API Key</label>
-        <input type="password" class="form-control" name="ttt_api_key" value="<?php echo $apiKey;?>">
+        <input type="password" class="form-control" name="ttt_api_key" value="<?php echo esc_attr($apiKey);?>">
         <div id="apiHelp" class="ttt-form-text">
             <div class="container-ttt-content">
                 <div class="row">
