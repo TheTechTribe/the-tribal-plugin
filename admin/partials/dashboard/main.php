@@ -3,7 +3,7 @@
         <h1>The Tech Tribe</h1>
         <div class="alert alert-warning" role="alert">
             WARNING: The log file for this plugin contains your web servers IP Address. </br>
-            By default, Wordpress stores all Plugin Log Files in the /uploads/ folder which could be publicly accessible depending on your webserver configuration. </br>
+            This plugin attempts to store log files in a secure 'logs' directory outside the web root. If this directory is not available or writable, it will fall back to the /uploads/ folder, which could be publicly accessible depending on your webserver configuration. </br>
             If you don't want this log file to be publicly accessible, please check your webservers configuration and update your permissions if necessary.</br>
         </div>
         <div class="form form-dashboard-user col-md-8">
