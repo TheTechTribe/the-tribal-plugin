@@ -3,6 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+define('TTT_LOG_FILE_NAME', 'The-Tribal-Plugin.log');
+
 if(!function_exists('ttt_str_contains')){
     function ttt_str_contains($haystack, $needle) {
         return $needle !== '' && mb_strpos($haystack, $needle) !== false;
@@ -217,7 +219,7 @@ function tttCustomLogs($log) {
         $upload_dir = wp_upload_dir();
         $log_dir = $upload_dir['basedir'];
     }
-    $file = $log_dir . '/The-Tribal-Plugin.log';
+    $file = $log_dir . '/' . TTT_LOG_FILE_NAME;
 
     if(is_writable($log_dir)){
         $file_handle = fopen($file,"a");
@@ -234,12 +236,17 @@ function tttCustomLogs($log) {
 }
 
 function tttCustomLogsDelete() {
+    // Check secure location first
+    $secure_dir = ABSPATH . '../logs';
+    $secure_file = $secure_dir . '/' . TTT_LOG_FILE_NAME;
+    if(file_exists($secure_file)){
+        unlink($secure_file);
+    }
+    // Also check fallback location
     $upload_dir = wp_upload_dir();
-
-    $file = $upload_dir['basedir'] . '/The-Tribal-Plugin.log';
-
-    if(file_exists($file)){
-        unlink($file);
+    $upload_file = $upload_dir['basedir'] . '/' . TTT_LOG_FILE_NAME;
+    if(file_exists($upload_file)){
+        unlink($upload_file);
     }
 }
 
