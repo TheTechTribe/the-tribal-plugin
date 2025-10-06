@@ -3,8 +3,8 @@ Contributors: nigelmoore1, allan.casilum
 Donate link: thetechtribe.com
 Tags: techtribe, content, syndication
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 1.3.3
+Tested up to: 6.8.3
+Stable tag: 1.3.4
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,7 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 == Changelog ==
 = 1.3.4 October 1, 2025 =
 * Maintenance Security Update
+* Support for WordPress 6.8.3
 
 = 1.3.3 January 31, 2025 =
 * Update bootstrap library to version 5.3.3
