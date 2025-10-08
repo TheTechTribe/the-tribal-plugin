@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Current folder is the plugin folder
+# Current folder is the plugin folder: /plugin/the-tech-tribe
 PLUGIN_DIR="."
+PLUGIN_ROOT="the-tech-tribe"
 MAIN_FILE="the-tribal-plugin.php"
 
 # Extract version number from plugin header
@@ -13,33 +14,29 @@ if [ -z "$VERSION" ]; then
   VERSION="dev"
 fi
 
-# Output filename with version (one level up so zip isn’t inside itself)
-OUTPUT_FILE="the-tribal-plugin-${VERSION}.zip"
+# Output filename inside current folder
+OUTPUT_FILE="TTT_WordPress_Plugin.${VERSION}.zip"
 
 # Remove old zip if exists
 rm -f "$OUTPUT_FILE"
 
-# Zip everything in the current folder, excluding dev files and this script
-zip -r "$OUTPUT_FILE" . \
-  -x "./.git/*" \
-  -x "./.gitignore" \
-  -x "./.gitattributes" \
-  -x "./node_modules/*" \
-  -x "./tests/*" \
-  -x "./bin/*" \
-  -x "./.idea/*" \
-  -x "./.vscode/*" \
-  -x "./.DS_Store" \
-  -x "./Thumbs.db" \
-  -x "./composer.*" \
-  -x "./package*.json" \
-  -x "./webpack.*" \
-  -x "./phpunit.xml*" \
-  -x "./.editorconfig" \
-  -x "./.eslint*" \
-  -x "./.stylelintrc*" \
-  -x "./README.md" \
-  -x "./CHANGELOG.md" \
-  -x "./build-zip.sh"
+# Create a temporary folder structure
+TEMP_DIR="./temp-plugin-build"
+mkdir -p "$TEMP_DIR/$PLUGIN_ROOT"
+
+# Copy plugin files into the root folder inside temp
+find "$PLUGIN_DIR" -mindepth 1 -maxdepth 1 ! -name "temp-plugin-build" ! -name "$OUTPUT_FILE" \
+  ! -name "build-zip.sh" \
+  ! -name ".git" \
+  ! -name "node_modules" \
+  -exec cp -r {} "$TEMP_DIR/$PLUGIN_ROOT/" \;
+
+# Zip the folder
+cd "$TEMP_DIR"
+zip -r "../$OUTPUT_FILE" "$PLUGIN_ROOT"
+
+# Cleanup
+cd ..
+rm -rf "$TEMP_DIR"
 
 echo "✅ Created $OUTPUT_FILE"
