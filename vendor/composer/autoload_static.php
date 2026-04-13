@@ -22,6 +22,24 @@ class ComposerStaticInitbbdfa9cffa262026606ce56c05a20648
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'TheTribalPlugin\\APIPortal' => __DIR__ . '/../..' . '/app/APIPortal.php',
+        'TheTribalPlugin\\AjaxImportPost' => __DIR__ . '/../..' . '/app/AjaxImportPost.php',
+        'TheTribalPlugin\\AttachImage' => __DIR__ . '/../..' . '/app/AttachImage.php',
+        'TheTribalPlugin\\Authenticate' => __DIR__ . '/../..' . '/app/Authenticate.php',
+        'TheTribalPlugin\\CronJobs' => __DIR__ . '/../..' . '/app/CronJobs.php',
+        'TheTribalPlugin\\Dashboard' => __DIR__ . '/../..' . '/app/Dashboard.php',
+        'TheTribalPlugin\\DownloadImage' => __DIR__ . '/../..' . '/app/DownloadImage.php',
+        'TheTribalPlugin\\HealthStatus' => __DIR__ . '/../..' . '/app/HealthStatus.php',
+        'TheTribalPlugin\\ImportPost' => __DIR__ . '/../..' . '/app/ImportPost.php',
+        'TheTribalPlugin\\ImportStatistics' => __DIR__ . '/../..' . '/app/ImportStatistics.php',
+        'TheTribalPlugin\\MeAccount' => __DIR__ . '/../..' . '/app/MeAccount.php',
+        'TheTribalPlugin\\Post' => __DIR__ . '/../..' . '/app/Post.php',
+        'TheTribalPlugin\\ShowAlert' => __DIR__ . '/../..' . '/app/ShowAlert.php',
+        'TheTribalPlugin\\StatusVerbage' => __DIR__ . '/../..' . '/app/StatusVerbage.php',
+        'TheTribalPlugin\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'TheTribalPlugin\\WPMenu' => __DIR__ . '/../..' . '/app/WPMenu.php',
+        'TheTribalPlugin\\WPOptions' => __DIR__ . '/../..' . '/app/WPOptions.php',
+        'TheTribalPlugin\\WPUserMeta' => __DIR__ . '/../..' . '/app/WPUserMeta.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

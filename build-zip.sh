@@ -59,7 +59,7 @@ find "$PLUGIN_DIR" -mindepth 1 -maxdepth 1 \
   ! -name "tests" \
   -exec cp -r {} "$TEMP_DIR/$PLUGIN_ROOT/" \;
 
-# Zip the folder
+# Zip with the-tech-tribe/ folder as the top-level entry
 echo "🗜️  Zipping..."
 cd "$TEMP_DIR"
 zip -r "../$OUTPUT_FILE" "$PLUGIN_ROOT" -x "*.DS_Store" -x "*/__MACOSX/*"
