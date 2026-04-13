@@ -104,7 +104,8 @@ class The_Tribal_Plugin_Admin {
 			wp_localize_script( $this->plugin_name, 'ttt_admin_ajax_object',
 				[
 					'plugin_url' => tttc_get_plugin_dir_url(),
-					'ajax_url' => admin_url( 'admin-ajax.php' )
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'import_nonce' => wp_create_nonce( 'ttt_import_post_nonce' )
 				]
 			);
 		}

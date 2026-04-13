@@ -54,7 +54,6 @@ class CronJobs
     public function scheduleSyncBlog()
     {
 		tttImportJobVia('Cron Jobs');
-		tttCustomLogs("cron job import ");
         return \TheTribalPlugin\ImportPost::get_instance()->import();
     }
     

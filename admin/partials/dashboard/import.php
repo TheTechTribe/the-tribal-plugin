@@ -22,6 +22,6 @@
     </div>
     
     <input type="hidden" name="action" value="ttt_force_import">
-    <?php wp_nonce_field( 'ttt_client_update_plugin_' . get_current_user_id() ); ?>
+    <?php wp_nonce_field( 'ttt_client_update_plugin' ); ?>
     <button type="submit" class="btn btn-primary btn-import">START MANUAL IMPORT</button>
 </form> 

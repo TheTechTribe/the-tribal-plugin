@@ -57,8 +57,6 @@ class ImportPost
         tttResetDownloadStatusStartEnd();
         
         tttStartImport();
-        
-        tttCustomLogs("start import ");
 
         $countSuccess = 0;
 
@@ -67,11 +65,6 @@ class ImportPost
         //insert the post
         $post = new Post;
         $getPost = $post->get($args);
-        
-        tttCustomLogs('getPost');
-        tttCustomLogs($getPost);
-        tttCustomLogs($ret);
-        tttCustomLogs('getPost');
 
         if( 
             $getPost->status == 200 
@@ -83,7 +76,6 @@ class ImportPost
             && $getPost->data['posts']['total_post'] >= 1
             && $getPost->data['success'] == true
         ) {
-            tttCustomLogs("start post data import ");
             $timezone_offset = get_option( 'gmt_offset' );
             
             $dataPost = $getPost->data['posts']['posts'];
@@ -96,9 +88,6 @@ class ImportPost
             
             $postData = [];
             $post_id = 0;
-            
-            tttCustomLogs("post data import ");
-            tttCustomLogs($dataPost);
 
             foreach($dataPost as $post) {
                 $postContent = '';
@@ -224,7 +213,6 @@ class ImportPost
             $ret['code'] = 'success';
             $ret['post_count_imported'] = $countSuccess;
             
-            tttCustomLogs("post imported : " . $countSuccess);
             tttLastDownload();
         }
 
@@ -233,8 +221,6 @@ class ImportPost
             $apiVerbage = tttGetAPIVerbage();
             $ret['msg-header'] = $apiVerbage['error']['header'];
             $ret['msg'] = $apiVerbage['error']['msg'];
-            
-            tttCustomLogs("post imported auth error ");
 
             tttSetKeyActive(0);
         }
@@ -244,8 +230,6 @@ class ImportPost
             $domainVerbage = tttGetDomainVerbage();
             $ret['msg-header'] = $domainVerbage['error']['header'];
             $ret['msg'] = $domainVerbage['error']['msg'];
-            
-            tttCustomLogs("post imported domain error ");
 
             tttSetKeyActive(0);
         }
@@ -256,22 +240,15 @@ class ImportPost
             $ret['msg'] = $statusVerbage['nothing']['msg'];
             $ret['code'] = $getPost->data['code'];
             $ret['post_count_imported'] = $countSuccess;
-
-            tttCustomLogs("nothing to import ");
         }
         
         tttLastChecked();
         
         tttLastCheckedStatus($ret['code'], $ret['msg']);
-        
-        tttCustomLogs("return import api code" . $ret['code']);
-        tttCustomLogs("return import api msg" . $ret['msg']);
 
         tttEndImport();
 
         tttLogReturn($ret);
-        
-        tttCustomLogs("end post import ");
 
         return rest_ensure_response($ret);
     }

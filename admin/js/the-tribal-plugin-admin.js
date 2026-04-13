@@ -123,7 +123,8 @@
 				$(".btn-import").prop('disabled', true);
 				
 				var data = {
-					'action' : 'ttt_import_post'
+					'action' : 'ttt_import_post',
+					'nonce'  : ttt_admin_ajax_object.import_nonce
 				};
 				var request = $.ajax({
 					url: ttt_admin_ajax_object.ajax_url,
@@ -133,7 +134,6 @@
 				});
 				
 				request.done(function( msg ) {
-					console.log(msg);
 					toggleAlertHTML(true, ajaxShowAlert(msg));
 					toggleAjaxStatusHTML(false);
 					

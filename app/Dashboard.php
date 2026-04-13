@@ -93,12 +93,12 @@ class Dashboard
 	{
 		if( $_POST )
 		{
-			if ( 
-				empty( $_POST['_wpnonce'] ) 
-				&& ! wp_verify_nonce( $_POST['_wpnonce'], 'ttt_client_update_plugin' ) 
-				&& check_admin_referer( $_POST['_wp_http_referer'], 'ttt_client_update_plugin' ) 
-			) {
-				return;
+			if ( ! check_admin_referer( 'ttt_client_update_plugin' ) ) {
+				wp_die( __( 'Security check failed.', 'the-tech-tribe' ) );
+			}
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( __( 'You do not have permission to perform this action.', 'the-tech-tribe' ) );
 			}
 
 			$generalErrorVerbage = tttThrowGeneralErrorMsg();
@@ -141,7 +141,6 @@ class Dashboard
 			$arrReturnMsg['action'] = true;
 
 			tttImportJobVia('Manual Import');
-			tttCustomLogs("start import posts : ");
 
 			$ret = \TheTribalPlugin\ImportPost::get_instance()->import();
 			
@@ -180,11 +179,6 @@ class Dashboard
 				'msg-content' => $msgContent,
 				'action' 	=> true
 			];
-			
-			tttCustomLogs("return import posts : ");
-        	tttCustomLogs($ret);
-			
-			tttCustomLogs("end import posts");
 
 			return $arrReturnMsg;
 		}

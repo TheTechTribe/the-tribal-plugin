@@ -54,7 +54,6 @@ class Post
 		$apiKey = WPOptions::get_instance()->apiKey();
 		
 		if($apiKey != '') {
-			tttCustomLogs("api key not empty");
 
 			//move this to function
 			$userAccountKeys = \TheTribalPlugin\User::get_instance()->getAccountKeys();
@@ -74,23 +73,13 @@ class Post
 				'body'		=> $postBodyArgs['body']
 			]);
 			
-			tttCustomLogs("wp_remote_post response");
-			tttCustomLogs($response);
-			
 			$resCode = wp_remote_retrieve_response_code($response);
-			tttCustomLogs("resCode");
-			tttCustomLogs($resCode);
 
 			$resBody = wp_remote_retrieve_body($response);
-			tttCustomLogs("resBody");
-			tttCustomLogs($resBody);
 
 			$toArrayBody = json_decode($resBody, 1);
 			
 			if ( is_wp_error( $response ) ) {
-				tttCustomLogs("has wp error");
-				tttCustomLogs($response);
-
 				$error_message = $response->get_error_message();
 				$ret = $error_message;
 			} else {
@@ -98,8 +87,6 @@ class Post
 			}
 		}
 
-		tttCustomLogs("return");
-		tttCustomLogs($ret);
 		return rest_ensure_response($ret);
     }
     

@@ -46,13 +46,13 @@ class AjaxImportPost
 
     public function import()
     {
-		tttCustomLogs("start import posts : ");
-		tttCustomLogs("manual import ");
+		check_ajax_referer( 'ttt_import_post_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( -1 );
+		}
 
         $ret =  \TheTribalPlugin\ImportPost::get_instance()->import();
-		tttCustomLogs("manual import ret");
-		tttCustomLogs($ret);
-		tttCustomLogs("manual import ret");
 		
 		$returnCode = $ret->data['code'];
 		$returnMsg = $ret->data['msg'];
@@ -105,11 +105,6 @@ class AjaxImportPost
 			'last_check' 				=> date_i18n('d F Y h:i A', strtotime($getLastCheck)),
 			'last_successfull_import' 	=> $dateGetLastImport
 		];
-
-		tttCustomLogs("return import posts : ");
-        tttCustomLogs($ret);
-
-		tttCustomLogs("end import posts");
 
 		wp_send_json_error($arrReturnMsg);
     }

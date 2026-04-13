@@ -40,6 +40,6 @@
     </div>
     <hr>
     <input type="hidden" name="action" value="ttt_update_dashboard_user">
-    <?php wp_nonce_field( 'ttt_client_update_plugin_' . get_current_user_id() ); ?>
+    <?php wp_nonce_field( 'ttt_client_update_plugin' ); ?>
     <button type="submit" class="btn btn-primary">SAVE SETTINGS</button>
 </form>

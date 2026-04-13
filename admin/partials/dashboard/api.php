@@ -1,7 +1,7 @@
 <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#api-key');?>" method="post" class="dashboard-form">
     <div class="mb-3">
         <label class="form-label">API Key</label>
-        <input type="password" class="form-control" name="ttt_api_key" value="<?php echo esc_attr($apiKey);?>">
+        <input type="password" class="form-control" name="ttt_api_key" value="" placeholder="<?php echo $apiKey ? esc_attr( str_repeat( '•', 32 ) ) : ''; ?>">
         <div id="apiHelp" class="ttt-form-text">
             <div class="container-ttt-content">
                 <div class="row">
@@ -18,6 +18,6 @@
         </div>
     </div>
     <input type="hidden" name="action" value="ttt_activate_key">
-    <?php wp_nonce_field( 'ttt_client_update_plugin_' . get_current_user_id() ); ?>
+    <?php wp_nonce_field( 'ttt_client_update_plugin' ); ?>
     <button type="submit" class="btn btn-primary">ACTIVATE API KEY</button>
 </form>

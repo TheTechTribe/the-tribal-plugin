@@ -27,6 +27,9 @@ if(!function_exists('ttt_ensure_response_api')){
 if(!function_exists('ttt_dd')){
     function ttt_dd($arr = [], $exit = false)
     {
+        if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
+            return;
+        }
         echo '<pre>';
         print_r($arr);
         echo '</pre>';
@@ -263,6 +266,7 @@ function tttAllowedAdminAssetInclude()
 
 function tttGetTheUserIp() 
 {
+    $ip = '';
     if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
         //check ip from share internet
         $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -271,6 +275,10 @@ function tttGetTheUserIp()
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     } else {
         $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    // Validate IP address - fall back to REMOTE_ADDR if invalid
+    if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+        $ip = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
     }
     return apply_filters( 'ttt_wp_get_ip', $ip );
 }
