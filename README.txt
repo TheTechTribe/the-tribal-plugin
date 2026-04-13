@@ -4,7 +4,7 @@ Donate link: thetechtribe.com
 Tags: techtribe, content, syndication
 Requires at least: 5.0
 Tested up to: 6.8.3
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,7 +58,17 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
 
 == Changelog ==
-= 1.3.4 October 1, 2025 =
+= 1.3.5 - April 13, 2026 =
+* Security patch: fix sensitive data exposure vulnerability (CWE-201)
+* API key no longer rendered in HTML source
+* Fixed broken nonce validation logic on settings forms
+* Added authorization checks to all form submission and AJAX handlers
+* Removed sensitive API response data from log files
+* Removed debug console.log from production JavaScript
+* Added IP address validation to prevent HTTP header spoofing
+* Debug helper ttt_dd() restricted to WP_DEBUG mode only
+
+= 1.3.4 - October 1, 2025 =
 * Maintenance Security Update
 * Support for WordPress 6.8.3
 
