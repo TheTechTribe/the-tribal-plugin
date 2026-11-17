@@ -49,6 +49,10 @@ class StatusVerbage
                     'header' => 'WOOHOO - IT WORKED!',
                     'msg' => 'Your Tech Tribe plugin is now activated. Make sure you adjust your settings below.'
                 ],
+                'empty' => [
+                    'header' => 'PLEASE ENTER YOUR API KEY',
+                    'msg' => 'The API key box was empty, so nothing was checked. Please copy your API key from your Tech Tribe portal, paste it into the box and click Activate API Key again.'
+                ],
                 'error' => [
                     'header' => 'UH-OH - THERE WAS AN ERROR',
                     'msg' => 'Uh-oh, it looks like the API key you entered was incorrect. Please copy and paste it again, making sure no extra spaces or characters come across. If it still fails, please email us at help@thetechtribe.com.'
@@ -136,6 +140,10 @@ class StatusVerbage
                 'unavailable' => [
                     'header' => 'UH-OH - SERVICE UNAVAILABLE',
                     'msg' => 'The Tech Tribe content service is temporarily unavailable. Please try again shortly and if it still continues - please email help@thetechtribe.com.'
+                ],
+                'not_found' => [
+                    'header' => 'UH-OH - CONNECTION ISSUE',
+                    'msg' => 'Your website reached The Tech Tribe, but our service didn\'t recognise the request from this version of the plugin. This is usually temporary while we update our systems, and your API key and settings are unchanged. Please try again in a little while. If it still happens, email help@thetechtribe.com and mention you\'re on plugin version ' . THE_TRIBAL_PLUGIN_VERSION . '.'
                 ],
             ],
         ];

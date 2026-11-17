@@ -31,6 +31,7 @@ class Test_Dashboard extends TTT_TestCase {
 			'portal unavailable'     => [ 'unavailable', 'UH-OH - SERVICE UNAVAILABLE' ],
 			'request timeout'        => [ 'timeout', [ 'general_error', 'timeout' ] ],
 			'response not json'      => [ 'not_json', [ 'general_error', 'error' ] ],
+			'portal route missing'   => [ 'no_route', [ 'general_error', 'not_found' ] ],
 		];
 	}
 
@@ -51,6 +52,33 @@ class Test_Dashboard extends TTT_TestCase {
 			$this->assertSame( $expected, $result['msg-header'] );
 		}
 		$this->assertFalse( tttIsKeyActive() );
+		$this->assertSame( $result['msg'], tttLastVerifyError(), 'The reason must be stored for the "Inactive" status' );
+	}
+
+	public function test_activating_with_an_empty_box_explains_what_to_do_and_changes_nothing() {
+		update_option( 'ttt_is_active', 1 );
+		$requestsBefore = count( $this->portalRequests );
+
+		$result = $this->activateKey( '   ' );
+
+		$this->assertSame( 'error', $result['code'] );
+		$this->assertSame( $this->verbage( 'api', 'empty' )['header'], $result['msg-header'] );
+		$this->assertSame( $this->verbage( 'api', 'empty' )['msg'], $result['msg'] );
+		$this->assertCount( $requestsBefore, $this->portalRequests, 'No portal request for an empty key' );
+		$this->assertTrue( tttIsKeyActive(), 'An empty submit must not deactivate a working key' );
+		$this->assertSame( self::$API_KEY, get_option( 'ttt_api_key_blog_post' ), 'The saved key must be kept' );
+		$this->assertStringContainsString( 'API key activation skipped: the API key box was empty', $this->logContents() );
+	}
+
+	public function test_an_unhandled_form_submit_shows_an_error_instead_of_nothing() {
+		wp_set_current_user( $this->adminId );
+		$_POST = $_REQUEST = [ 'action' => 'ttt_unknown', '_wpnonce' => wp_create_nonce( 'ttt_client_update_plugin' ), '_wp_http_referer' => '/wp-admin/admin.php?page=the-tribal-plugin' ];
+
+		$result = ( new \TheTribalPlugin\Dashboard() )->update();
+
+		$this->assertSame( 'error', $result['code'] );
+		$this->assertSame( $this->verbage( 'general_error', 'error' )['header'], $result['msg-header'] );
+		$this->assertStringContainsString( 'Dashboard form submitted but not handled', $this->logContents() );
 	}
 
 	public function test_activation_calls_portal_v2_auth_with_domain_and_key() {
@@ -155,5 +183,22 @@ class Test_Dashboard extends TTT_TestCase {
 			$this->assertStringContainsString( 'id="' . $tab . '"', $html );
 		}
 		$this->assertStringNotContainsString( self::$API_KEY, $html, 'The API key must never be printed in the page' );
+		$this->assertStringContainsString( 'placeholder="A key is saved. Paste a new key to re-activate."', $html );
+		$this->assertStringContainsString( 'data-loading-text="Checking your API key…"', $html );
+	}
+
+	public function test_admin_page_shows_why_the_key_is_inactive() {
+		$this->scenario = 'domain';
+		$this->activateKey();
+		$_POST = $_REQUEST = [];
+
+		// Dashboard::init() uses require_once, so the full page renders only once per test run.
+		$apiKey = get_option( 'ttt_api_key_blog_post' );
+		ob_start();
+		include tttc_get_plugin_dir() . 'admin/partials/dashboard/api.php';
+		$html = ob_get_clean();
+
+		$this->assertStringContainsString( 'Inactive', $html );
+		$this->assertStringContainsString( '<b>Last check:</b> ' . esc_html( $this->verbage( 'domain', 'error' )['msg'] ), $html );
 	}
 }

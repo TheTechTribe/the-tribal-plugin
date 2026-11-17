@@ -156,6 +156,10 @@ class APIPortal
 			// domain_not_approved
 			$text = $verbage->get( 'domain' )['error'];
 			$deactivate = true;
+		} elseif ( 404 === $status ) {
+			// Portal reached but the endpoint isn't there (e.g. rest_no_route: portal without this API version).
+			$text = $general['not_found'];
+			$deactivate = false;
 		} elseif ( 429 === $status ) {
 			$text = $general['rate_limited'];
 			$deactivate = false;

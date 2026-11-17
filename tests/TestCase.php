@@ -158,6 +158,9 @@ trait TTT_Fixtures {
 				return $this->response( 200, '<html>Proxy error</html>', 'text/html' );
 			case 'unavailable':
 				return $this->response( 503, '<html>Maintenance</html>', 'text/html' );
+			case 'no_route':
+				// What WordPress answers when the portal doesn't have the v2 routes.
+				return $this->json( 404, [ 'code' => 'rest_no_route', 'message' => 'No route was found matching the URL and request method.', 'data' => [ 'status' => 404 ] ] );
 		}
 		if ( isset( $errors[ $this->scenario ] ) ) {
 			list( $status, $code, $msg ) = $errors[ $this->scenario ];

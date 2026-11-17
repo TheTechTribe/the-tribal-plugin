@@ -154,6 +154,17 @@ function tttVerifyChecked($code, $msg)
     ]);
 }
 
+/**
+ * Why the key is not active, from the last check (activation or import), or '' if unknown.
+ */
+function tttLastVerifyError()
+{
+    $last = (string) \TheTribalPlugin\HealthStatus::get_instance()->verifyChecked();
+    $parts = explode(' : ', $last, 2);
+
+    return ( count($parts) === 2 && $parts[0] === 'error' ) ? $parts[1] : '';
+}
+
 function tttRemoveInDbOptions()
 {
     global $wpdb;

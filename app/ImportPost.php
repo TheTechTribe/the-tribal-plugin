@@ -190,6 +190,8 @@ class ImportPost
 
             if( $portalError['deactivate'] ) {
                 tttSetKeyActive(0);
+                // Shown under "Inactive" on the API Key tab.
+                tttVerifyChecked('error', $portalError['msg']);
             }
             $logger->error('Import stopped: portal returned an error', ['status' => $getPost['status'], 'code' => $getPost['code'], 'key_deactivated' => $portalError['deactivate']]);
         } elseif( empty($portalPosts) ) {

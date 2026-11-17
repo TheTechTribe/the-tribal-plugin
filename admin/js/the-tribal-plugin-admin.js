@@ -175,8 +175,31 @@
 		};
 	}();
 
+	// Show progress on regular (page-reloading) forms: disable the button and say what's happening.
+	function initFormLoadingState(){
+		$('.dashboard-form').on('submit', function(){
+			var $btn = $(this).find('button[type="submit"][data-loading-text]');
+			$btn.data('original-html', $btn.html());
+			$btn.prop('disabled', true).html(
+				'<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>' +
+				$('<span>').text($btn.data('loading-text')).html()
+			);
+		});
+
+		// Coming back with the browser's Back button can restore the page with the button still disabled.
+		$(window).on('pageshow', function(){
+			$('.dashboard-form button[type="submit"][data-loading-text]').each(function(){
+				var $btn = $(this);
+				if ($btn.data('original-html')) {
+					$btn.prop('disabled', false).html($btn.data('original-html'));
+				}
+			});
+		});
+	}
+
 	$(function(){
 		initUpdateTabHashLink();
+		initFormLoadingState();
 		ajaxImportPost.initWithoutRealTimeProgress();
 	});
 

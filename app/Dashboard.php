@@ -143,20 +143,24 @@ class Dashboard
 				];
 			}
 
-			if( isset($_POST['ttt_api_key']) && trim($_POST['ttt_api_key']) != '' ) {
-				$updateApiKey = $this->updateAPIKey($_POST);
+			$updateApiKey = $this->updateAPIKey($_POST);
+			if( $updateApiKey )
+			{
+				return $updateApiKey;
+			}
 
-				if( $updateApiKey )
-				{
-					return $updateApiKey;
-				}
-			} 
-			
 			$forceImport = $this->forceImport($_POST);
 			if( $forceImport )
 			{
 				return $forceImport;
 			}
+
+			// Nothing handled this submit: never leave the user without a message.
+			Logger::get_instance()->warning('Dashboard form submitted but not handled', [
+				'action' => isset($_POST['action']) ? sanitize_text_field(wp_unslash($_POST['action'])) : '',
+			]);
+
+			return $arrReturnMsg;
 		}
 	}
 
@@ -262,9 +266,26 @@ class Dashboard
 		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_activate_key' ){
 			$arrReturnMsg['action'] = true;
 
+			if( ! isset($request['ttt_api_key']) || trim($request['ttt_api_key']) === '' ) {
+				$apiVerbage = tttGetAPIVerbage();
+
+				Logger::get_instance()->warning('API key activation skipped: the API key box was empty', [
+					'key_active' => tttIsKeyActive(),
+					'user_id'    => get_current_user_id(),
+				]);
+
+				return [
+					'code' 		 => 'error',
+					'msg-header' => $apiVerbage['empty']['header'],
+					'msg' 		 => $apiVerbage['empty']['msg'],
+					'status' 	 => 200,
+					'action' 	 => true
+				];
+			}
+
 			if(
-				isset($request['ttt_api_key']) 
-				&& !empty(trim($request['ttt_api_key'])) 
+				isset($request['ttt_api_key'])
+				&& !empty(trim($request['ttt_api_key']))
 			){
 				$apiKey	= sanitize_text_field($request['ttt_api_key']);
 				$apiVerbage = tttGetAPIVerbage();

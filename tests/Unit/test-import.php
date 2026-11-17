@@ -131,6 +131,7 @@ class Test_Import extends TTT_TestCase {
 			'blog source down'       => [ 'upstream_down', 'UH-OH - SERVICE UNAVAILABLE', true ],
 			'request timeout'        => [ 'timeout', [ 'general_error', 'timeout' ], true ],
 			'response not json'      => [ 'not_json', [ 'general_error', 'error' ], true ],
+			'portal route missing'   => [ 'no_route', [ 'general_error', 'not_found' ], true ],
 		];
 	}
 
@@ -152,6 +153,9 @@ class Test_Import extends TTT_TestCase {
 			$this->assertSame( $expected, $result['msg-header'] );
 		}
 		$this->assertSame( $keyStaysActive, tttIsKeyActive(), $keyStaysActive ? 'Key must stay active' : 'Key must be marked inactive' );
+		if ( ! $keyStaysActive ) {
+			$this->assertSame( $result['msg'], tttLastVerifyError(), 'The reason must be stored for the "Inactive" status' );
+		}
 		$this->assertNotEmpty( get_option( 'ttt_client_last_checked' ), 'Last check must be recorded even on errors' );
 	}
 

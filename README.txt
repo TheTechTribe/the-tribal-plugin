@@ -66,6 +66,10 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 * API keys, tokens and email addresses are masked in the log; visitor IP addresses are not logged
 * Legacy log files from older versions are removed automatically
 * Removed the outdated log file warning from the dashboard
+* Clicking Activate API Key with an empty box now explains what to do instead of doing nothing; the saved-key placeholder no longer looks like a typed key
+* "Inactive" status now shows the reason from the last check (activation or import)
+* When the portal can't find the requested API endpoint (HTTP 404), a clear connection message with the plugin version is shown instead of a generic error; the key stays active during imports
+* Activate and Save buttons show a spinner and "Checking your API key…" / "Saving…" while the page works; any unhandled form submit now shows an error message and is logged
 * Switched to The Tech Tribe Portal API v2 (requires portal with v2/auth and content_format support); errors are now handled by HTTP status code
 * Clear messages for missing membership, unapproved domain, too many requests and service unavailable; the API key is only deactivated for key, membership or domain errors
 * Fixed a fatal error when the portal could not be reached or timed out
