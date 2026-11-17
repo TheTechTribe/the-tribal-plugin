@@ -5,6 +5,11 @@ use TheTribalPlugin\APIPortal;
 use WP_Error;
 use WP_REST_Response;
 
+/**
+ * Never called anywhere in the plugin (only listed in the Composer autoloader).
+ * If it were used, me() would pass the raw connection error through, which must not reach users.
+ */
+//dead code, to be removed in future update
 class MeAccount
 {
     /**

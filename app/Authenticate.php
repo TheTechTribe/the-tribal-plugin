@@ -44,37 +44,10 @@ class Authenticate
 
     public function auth( $args = [] )
     {
-        //get this in DB
-		$ret = '';
-		
-		$apiKey = $args['user_api_key'] ?? '';
-		$userDomain = $args['user_domain'] ?? '';
-
-		$urlAPIPortal = new APIPortal();
-		$url = $urlAPIPortal->url() . 'auth';
-		
-		$response = wp_remote_post( $url, [
-			'timeout'     => 45,
-			'body'        => [
-				'user_domain'	=> $userDomain,
-				'user_api_key'	=> $apiKey,
-			],
+		return APIPortal::get_instance()->post('auth', [
+			'user_domain'	=> $args['user_domain'] ?? '',
+			'user_api_key'	=> $args['user_api_key'] ?? '',
 		]);
-		
-		$resCode = wp_remote_retrieve_response_code($response);
-		
-		$resBody = wp_remote_retrieve_body($response);
-
-		$toArrayBody = json_decode($resBody, 1);
-		
-		if ( is_wp_error( $response ) ) {
-			$error_message = $response->get_error_message();
-			$ret = $error_message;
-		} else {
-			$ret = $toArrayBody;
-		}
-
-		return rest_ensure_response($ret);
     }
     
 }

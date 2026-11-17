@@ -46,11 +46,19 @@ class AjaxImportPost
 
     public function import()
     {
-		check_ajax_referer( 'ttt_import_post_nonce', 'nonce' );
+		$importVerbage = \TheTribalPlugin\StatusVerbage::get_instance()->get('import');
+
+		if ( ! check_ajax_referer( 'ttt_import_post_nonce', 'nonce', false ) ) {
+			Logger::get_instance()->warning('Manual import (AJAX) refused: security check failed (page likely open too long)', ['user_id' => get_current_user_id()]);
+			$this->sendRefusal( $importVerbage['expired'] );
+		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( -1 );
+			Logger::get_instance()->warning('Manual import (AJAX) refused: user lacks manage_options', ['user_id' => get_current_user_id()]);
+			$this->sendRefusal( $importVerbage['not_allowed'] );
 		}
+
+		Logger::get_instance()->info('Import triggered manually (AJAX)', ['user_id' => get_current_user_id()]);
 
         $ret =  \TheTribalPlugin\ImportPost::get_instance()->import();
 		
@@ -60,6 +68,8 @@ class AjaxImportPost
 		$msgContent = '';
 
 		if(isset($ret->data['code']) && ! $ret->data['success']) {
+			// ImportPost always returns 'msg' as a plain string, so the ['errors']['invalid'] lookup never matches.
+			//dead code, to be removed in future update
 			$rawMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 			$returnMsg = esc_html($rawMsg);
 			$returnCode = (!$ret->data['success']) ? 'error':'';
@@ -106,7 +116,26 @@ class AjaxImportPost
 			'last_successfull_import' 	=> $dateGetLastImport
 		];
 
+		Logger::get_instance()->debug('Manual import (AJAX) response sent to browser', $arrReturnMsg);
+
+		// The admin JS reads response.data either way; the success flag now reflects the import.
+		if( ! empty($ret->data['success']) ) {
+			wp_send_json_success($arrReturnMsg);
+		}
 		wp_send_json_error($arrReturnMsg);
     }
+
+	/**
+	 * Refuse the import with a message the admin JS can show (it reads response.data).
+	 */
+	private function sendRefusal( $verbage )
+	{
+		wp_send_json_error( [
+			'code'        => 'error',
+			'msg_header'  => $verbage['header'],
+			'msg'         => $verbage['msg'],
+			'msg_content' => '',
+		], 403 );
+	}
 
 }

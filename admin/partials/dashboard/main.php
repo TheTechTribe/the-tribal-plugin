@@ -1,11 +1,6 @@
 <div class="wrap">
     <div class="bootstrap-iso">
         <h1>The Tech Tribe</h1>
-        <div class="alert alert-warning" role="alert">
-            WARNING: The log file for this plugin contains your web servers IP Address. </br>
-            This plugin attempts to store log files in a secure 'logs' directory outside the web root. If this directory is not available or writable, it will fall back to the /uploads/ folder, which could be publicly accessible depending on your webserver configuration. </br>
-            If you don't want this log file to be publicly accessible, please check your webservers configuration and update your permissions if necessary.</br>
-        </div>
         <div class="form form-dashboard-user col-md-8">
             <div class="dashboard-alert">
                 
@@ -28,6 +23,9 @@
                         <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab" aria-controls="contact" aria-selected="false">Import Status</button>
                     </li>
                 <?php endif; ?>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab" aria-controls="logs" aria-selected="false">Logs</button>
+                </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
@@ -61,6 +59,15 @@
                         </div>
                     </div>
                 <?php endif; ?>
+                <div class="tab-pane fadex" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                    <div class="wrap">
+                        <?php
+                            if ( is_file( $partTemplateLogs ) ) {
+                                require_once $partTemplateLogs;
+                            }
+                        ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

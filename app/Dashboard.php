@@ -74,6 +74,9 @@ class Dashboard
         ]);
 
 		$nextScheduleCron = tttGetNextCronTimeDate();
+		if( ! $nextScheduleCron ) {
+			Logger::get_instance()->warning('Daily import cron (ttt_user_cron_hook) is not scheduled');
+		}
 
 		$defaultAuthor 	= WPOptions::get_instance()->defaultAuthor();
 
@@ -83,6 +86,7 @@ class Dashboard
 		$partTemplateApi = tttc_get_plugin_dir() . 'admin/partials/dashboard/api.php';
 		$partTemplateSettings = tttc_get_plugin_dir() . 'admin/partials/dashboard/settings.php';
 		$partTemplateImport = tttc_get_plugin_dir() . 'admin/partials/dashboard/import.php';
+		$partTemplateLogs = tttc_get_plugin_dir() . 'admin/partials/dashboard/logs.php';
 
         if ( is_file( $template ) ) {
             require_once $template;
@@ -93,13 +97,21 @@ class Dashboard
 	{
 		if( $_POST )
 		{
+			// check_admin_referer() already stops the page itself when the check fails, so this never runs.
+			//dead code, to be removed in future update
 			if ( ! check_admin_referer( 'ttt_client_update_plugin' ) ) {
-				wp_die( __( 'Security check failed.', 'the-tech-tribe' ) );
+				wp_die( __( 'This page has been open for a while. Please go back, reload the page and try again.', 'the-tech-tribe' ) );
 			}
 
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'You do not have permission to perform this action.', 'the-tech-tribe' ) );
+				wp_die( __( 'Only a site administrator can change these settings. Please ask an administrator to do this for you.', 'the-tech-tribe' ) );
 			}
+
+			Logger::get_instance()->captureFatalErrors();
+			Logger::get_instance()->info('Dashboard form submitted', [
+				'action'  => isset($_POST['action']) ? sanitize_text_field(wp_unslash($_POST['action'])) : '',
+				'user_id' => get_current_user_id(),
+			]);
 
 			$generalErrorVerbage = tttThrowGeneralErrorMsg();
 
@@ -116,6 +128,19 @@ class Dashboard
 						
 			if($updateSync){
 				return $updateSync;
+			}
+
+			if( isset($_POST['action']) && $_POST['action'] == 'ttt_clear_logs' ) {
+				Logger::get_instance()->clear();
+				Logger::get_instance()->info('Log cleared', ['user_id' => get_current_user_id()]);
+
+				return [
+					'code' 		 => 'success',
+					'msg-header' => 'Success',
+					'msg' 		 => 'Log cleared.',
+					'status' 	 => 200,
+					'action' 	 => true
+				];
 			}
 
 			if( isset($_POST['ttt_api_key']) && trim($_POST['ttt_api_key']) != '' ) {
@@ -140,6 +165,7 @@ class Dashboard
 		if( $_POST && isset($request['action']) && $request['action'] == 'ttt_force_import' ){
 			$arrReturnMsg['action'] = true;
 
+			Logger::get_instance()->info('Import triggered manually (form)', ['user_id' => get_current_user_id()]);
 			tttImportJobVia('Manual Import');
 
 			$ret = \TheTribalPlugin\ImportPost::get_instance()->import();
@@ -150,6 +176,8 @@ class Dashboard
 			$msgContent = '';
 
 			if(isset($ret->data['code']) && ! $ret->data['success']) {
+				// ImportPost always returns 'msg' as a plain string, so the ['errors']['invalid'] lookup never matches.
+				//dead code, to be removed in future update
 				$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
 				$returnCode = (!$ret->data['success']) ? 'error':'';
 			}
@@ -165,7 +193,7 @@ class Dashboard
 				$msgContent .= '<ul>';
 				foreach($ret->data['summary']['post'] as $post) {
 					$msgContent .= '<li>';
-					$msgContent .= $post['title'];
+					$msgContent .= esc_html($post['title']);
 					$msgContent .= '</li>';
 				}
 				$msgContent .= '</ul>';
@@ -206,9 +234,18 @@ class Dashboard
 					'value' 	=> $defaultAuthor
 				]);
 
+				Logger::get_instance()->info('Settings saved', [
+					'publish_setting' => $publishPosts,
+					'default_author'  => $defaultAuthor,
+					'user_id'         => get_current_user_id(),
+				]);
+
+				$settingsVerbage = StatusVerbage::get_instance()->get('settings');
+
 				$arrReturnMsg = [
 					'code' 		=> 'success',
-					'msg' 		=> 'Sucessfully Updated',
+					'msg-header' => $settingsVerbage['success']['header'],
+					'msg' 		=> $settingsVerbage['success']['msg'],
 					'status' 	=> 200,
 					'action' 	=> true
 				];
@@ -231,7 +268,15 @@ class Dashboard
 			){
 				$apiKey	= sanitize_text_field($request['ttt_api_key']);
 				$apiVerbage = tttGetAPIVerbage();
-				
+
+				Logger::get_instance()->addSecret($apiKey);
+				Logger::get_instance()->info('API key activation attempt', [
+					'user_api_key'   => $apiKey,
+					'domain'         => site_url(),
+					'key_was_active' => tttIsKeyActive(),
+					'user_id'        => get_current_user_id(),
+				]);
+
 				//verify the auth
 				$verifyArgs = [
 					'user_domain' 	=> site_url(),
@@ -252,63 +297,42 @@ class Dashboard
 					'value' 	=> site_url()
 				]);
 	
-				$returnCode = $ret->data['code'] ?? 'error';
-				$returnMsg = $ret->data['msg'] ?? '';
-				$returnMsgHeader = $ret->data['msg-header'] ?? '';
-	
-				if(isset($ret->data['code']) && ! $ret->data['success']) {
-					$returnMsg = isset($ret->data['msg']['errors']['invalid'][0]) ? $ret->data['msg']['errors']['invalid'][0] : $ret->data['msg'];
-					$returnCode = (!$ret->data['success']) ? 'error':'';
-
-					//invalid api key, means wrong
-					if(isset($ret->data['msg']['errors']['invalid']) && $ret->data['msg']['errors']['invalid'][0] == 'api error'){
-						$returnMsgHeader = $apiVerbage['error']['header'];
-						$returnMsg = $apiVerbage['error']['msg'];
-					}
-
-					//invalid api key, means wrong
-					if(isset($ret->data['msg']['errors']['ac_tag']) && $ret->data['msg']['errors']['ac_tag'][0] == 'ac tag error'){
-						$acTagVerbage = tttGetACTagVerbage();
-						$returnMsgHeader = $acTagVerbage['error']['header'];
-						$returnMsg = $acTagVerbage['error']['msg'];
-					}
-
-					//invalid domain url
-					if(isset($ret->data['msg']['errors']['alreadyused']) && $ret->data['msg']['errors']['alreadyused'][0] == 'domain already used'){
-						$domainVerbage = tttGetDomainVerbage();
-						$returnMsgHeader = $domainVerbage['error']['header'];
-						$returnMsg = $domainVerbage['error']['msg'];
-					}
-					
-					tttSetKeyActive(0);
-				}
-
-				if(!isset($ret->data['code']) && !is_array($ret->data)){
-					$returnMsg = $ret->data;
-
-					$getTimeOutErrror = tttThrowGeneralErrorMsg($returnMsg);
-					if($getTimeOutErrror){
-						$returnMsgHeader = $getTimeOutErrror['header'];
-						$returnMsg = $getTimeOutErrror['msg'];
-					}
-
-					tttSetKeyActive(0);
-				}
-
-				if(isset($ret->data['code']) && $ret->data['success']) {
+				// ['ok', 'status', 'code', 'msg', 'data'], see APIPortal::post().
+				if( $ret['ok'] ) {
+					$returnCode = 'success';
 					$returnMsgHeader = $apiVerbage['success']['header'];
 					$returnMsg = $apiVerbage['success']['msg'];
 
 					tttSetKeyActive(1);
+				} else {
+					$portalError = APIPortal::get_instance()->errorMessage($ret);
+					$returnCode = 'error';
+					$returnMsgHeader = $portalError['header'];
+					$returnMsg = $portalError['msg'];
+
+					// A key that could not be verified (for any reason) is not active.
+					tttSetKeyActive(0);
 				}
-				
+
 				$arrReturnMsg = [
 					'code' 		=> $returnCode,
 					'msg-header' => $returnMsgHeader,
 					'msg' 		=> $returnMsg,
-					'status' 	=> $ret->status,
+					'status' 	=> $ret['status'],
 					'action' 	=> true
 				];
+
+				Logger::get_instance()->log(
+					tttIsKeyActive() ? 'info' : 'error',
+					'API key activation result',
+					[
+						'http_code'   => $ret['status'],
+						'portal_code' => $ret['code'],
+						'msg_header'  => $returnMsgHeader,
+						'msg'         => $returnMsg,
+						'key_active'  => tttIsKeyActive(),
+					]
+				);
 
 				tttVerifyChecked($returnCode, $returnMsg);
 

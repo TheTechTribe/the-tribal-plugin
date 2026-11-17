@@ -59,13 +59,16 @@
 			retCode = 'danger';
 		}
 		var retMsgHeader = retData.data.msg_header;
-
-		var retMsg = retData.data.msg;
-		if(retMsg == '' || retMsg === null || retMsg === 'undefined'){
-			retMsg = 'Something is wrong';
+		if(!retMsgHeader){
+			retMsgHeader = (retCode == 'success') ? 'Success' : 'UH-OH - THERE WAS AN ERROR';
 		}
 
-		var retMsgContent = retData.data.msg_content;
+		var retMsg = retData.data.msg;
+		if(!retMsg){
+			retMsg = 'We couldn\'t show the result of this import check. Please reload the page to see the latest Import Status. If it keeps happening, please email help@thetechtribe.com.';
+		}
+
+		var retMsgContent = retData.data.msg_content || '';
 
 		let msgHtml = '<div class="alert alert-'+retCode+' alert-dismissible fade show" role="alert">'
 			+ '<h4 class="alert-heading ttt-show-alert-error-code">'+retMsgHeader+'</h4>'
@@ -148,10 +151,19 @@
 					$(".btn-import").prop('disabled', false);
 				});
 				
-				request.fail(function( jqXHR, textStatus ) {
-					//console.log(textStatus);
-					msg = "<h4>Request failed: " + textStatus+"</h4>";
-					toggleAjaxStatusHTML(true, msg);
+				request.fail(function( jqXHR ) {
+					toggleAjaxStatusHTML(false);
+					// The server explains refusals (e.g. page open too long) in response.data.
+					var retData = jqXHR.responseJSON;
+					if( ! retData || ! retData.data || ! retData.data.msg ) {
+						retData = { data: {
+							code: 'error',
+							msg_header: 'UH-OH - THE IMPORT DIDN\'T FINISH',
+							msg: 'We couldn\'t finish the import check. Please reload this page and try again. If it still continues - please email help@thetechtribe.com.',
+							msg_content: ''
+						} };
+					}
+					toggleAlertHTML(true, ajaxShowAlert(retData));
 					$(".btn-import").prop('disabled', false);
 				});
 			});

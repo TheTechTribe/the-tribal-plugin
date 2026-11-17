@@ -53,6 +53,7 @@ class CronJobs
 
     public function scheduleSyncBlog()
     {
+		Logger::get_instance()->info('Import triggered by WP-Cron (ttt_user_cron_hook)');
 		tttImportJobVia('Cron Jobs');
         return \TheTribalPlugin\ImportPost::get_instance()->import();
     }

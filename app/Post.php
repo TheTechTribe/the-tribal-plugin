@@ -48,46 +48,20 @@ class Post
 
     public function get( $args = [] )
     {
-        //get this in DB
-		
-		$ret = '';
 		$apiKey = WPOptions::get_instance()->apiKey();
-		
-		if($apiKey != '') {
 
-			//move this to function
-			$userAccountKeys = \TheTribalPlugin\User::get_instance()->getAccountKeys();
-			
-			$userAccountKeys['date_import_blog'] = \TheTribalPlugin\WPOptions::get_instance()->dateImportBlog();
-			
-			$postBodyArgs = [
-				'body' => $userAccountKeys
-			];
-			//move this to function
+		if($apiKey == '') {
+			Logger::get_instance()->warning('Portal request post/get skipped: no API key stored');
 
-			$urlAPIPortal = new APIPortal();
-			$url = $urlAPIPortal->url() . 'post/get';
-
-			$response = wp_remote_post( $url, [
-				'timeout'   => 45,
-				'body'		=> $postBodyArgs['body']
-			]);
-			
-			$resCode = wp_remote_retrieve_response_code($response);
-
-			$resBody = wp_remote_retrieve_body($response);
-
-			$toArrayBody = json_decode($resBody, 1);
-			
-			if ( is_wp_error( $response ) ) {
-				$error_message = $response->get_error_message();
-				$ret = $error_message;
-			} else {
-				$ret = $toArrayBody;
-			}
+			// Same shape as a portal 401, so callers show the "wrong API key" message.
+			return ['ok' => false, 'status' => 401, 'code' => 'invalid', 'msg' => 'No API key stored', 'data' => []];
 		}
 
-		return rest_ensure_response($ret);
+		$body = \TheTribalPlugin\User::get_instance()->getAccountKeys();
+		// Keep the original WordPress markup (block comments, embeds, classes); v2 sanitizes by default.
+		$body['content_format'] = 'raw';
+
+		return APIPortal::get_instance()->post('post/get', $body);
     }
     
 }

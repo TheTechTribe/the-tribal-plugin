@@ -74,23 +74,20 @@ if(!function_exists('tttSetKeyActive')){
     }
 }
 
+/**
+ * Soonest scheduled run of a cron hook (Unix timestamp), or false.
+ */
 function tttGetNextCronTime( $cron_name ){
-	$getCron = _get_cron_array();
-	
-	$timeStamp = [];
-    foreach( $getCron as $timestamp => $crons ){
-        if( in_array( $cron_name, array_keys( $crons ) ) ){
-            $timeStamp[] = $timestamp;
-        }
-    }
-	return end($timeStamp);
+	return wp_next_scheduled( $cron_name );
 }
 
+/**
+ * Next scheduled import in the site's timezone. Uses wp_date() so PHP's default
+ * timezone (which WordPress requires to stay UTC) is never changed.
+ */
 function tttGetNextCronTimeDate() {
-    date_default_timezone_set(wp_timezone_string());
     $nextSchedule = tttGetNextCronTime('ttt_user_cron_hook');
-    //return ($nextSchedule) ? date_i18n('d F Y h:i A', $nextSchedule) : '';
-    return ($nextSchedule) ? date('d F Y h:i A', $nextSchedule) : '';
+    return ($nextSchedule) ? wp_date('d F Y h:i A', $nextSchedule) : '';
 }
 
 function tttStartImport()
@@ -160,13 +157,25 @@ function tttVerifyChecked($code, $msg)
 function tttRemoveInDbOptions()
 {
     global $wpdb;
-    $wpdb->query("DELETE FROM {$wpdb->prefix}options where option_name like 'ttt_%' ");
+    // Escape "_" (a LIKE wildcard) so only this plugin's "ttt_" options match, and delete through
+    // delete_option() so the options cache (including persistent object caches) stays correct.
+    $names = $wpdb->get_col( $wpdb->prepare(
+        "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE %s",
+        $wpdb->esc_like( 'ttt_' ) . '%'
+    ) );
+    foreach ( $names as $name ) {
+        delete_option( $name );
+    }
 }
 
 function tttInitCronJob()
 {
     if ( ! wp_next_scheduled( 'ttt_user_cron_hook' ) ) {
-		wp_schedule_event( time(), 'daily', 'ttt_user_cron_hook' );
+		$scheduled = wp_schedule_event( time(), 'daily', 'ttt_user_cron_hook' );
+		\TheTribalPlugin\Logger::get_instance()->log(
+			$scheduled ? 'info' : 'error',
+			'Plugin activated: daily import cron ' . ( $scheduled ? 'scheduled' : 'could not be scheduled' )
+		);
 	}
 }
 
@@ -198,59 +207,22 @@ function tttGetAPIVerbage()
     return \TheTribalPlugin\StatusVerbage::get_instance()->get('api');
 }
 
-function tttGetDomainVerbage()
-{
-    return \TheTribalPlugin\StatusVerbage::get_instance()->get('domain');
-}
-
-function tttGetACTagVerbage()
-{
-    return \TheTribalPlugin\StatusVerbage::get_instance()->get('ac_tag');
-}
-
-function tttCustomLogs($log) { 
-    if(is_array($log) || is_object($log)) { 
-        $log = json_encode($log);
-    }
-    // Try secure location first
-    $log_dir = ABSPATH . '../logs';    
-    if (!is_dir($log_dir)) {
-        mkdir($log_dir, 0755, true);
-    }
-    if (!is_writable($log_dir)) {
-        // Fallback to uploads if secure location is not writable
-        $upload_dir = wp_upload_dir();
-        $log_dir = $upload_dir['basedir'];
-    }
-    $file = $log_dir . '/' . TTT_LOG_FILE_NAME;
-
-    if(is_writable($log_dir)){
-        $file_handle = fopen($file,"a");
-        $dateTime = date("Y-m-d H:i:s"); 
-        $newDateTime = new DateTime($dateTime); 
-        $newDateTime->setTimezone(new DateTimeZone("UTC")); 
-        $dateTimeUTC = $newDateTime->format("Y-m-d H:i:s");
-        fwrite($file_handle, "\n" ."(UTC) " . $dateTimeUTC . " | Local Time - " . wp_date('Y-m-d H:i:s') . ' :: ' . $log); 
-        fclose($file_handle); 
+/**
+ * Kept for backward compatibility; logging goes through \TheTribalPlugin\Logger.
+ */
+function tttCustomLogs($log) {
+    if(is_scalar($log)) {
+        \TheTribalPlugin\Logger::get_instance()->info((string) $log);
     } else {
-        // Failsafe: Log to PHP error log if no directory is writable
-        error_log('The-Tribal-Plugin: ' . $log);
+        \TheTribalPlugin\Logger::get_instance()->info('data', ['data' => $log]);
     }
 }
 
+/**
+ * Deletes the log folder and any legacy log files (TTT_LOG_FILE_NAME) from older versions.
+ */
 function tttCustomLogsDelete() {
-    // Check secure location first
-    $secure_dir = ABSPATH . '../logs';
-    $secure_file = $secure_dir . '/' . TTT_LOG_FILE_NAME;
-    if(file_exists($secure_file)){
-        unlink($secure_file);
-    }
-    // Also check fallback location
-    $upload_dir = wp_upload_dir();
-    $upload_file = $upload_dir['basedir'] . '/' . TTT_LOG_FILE_NAME;
-    if(file_exists($upload_file)){
-        unlink($upload_file);
-    }
+    \TheTribalPlugin\Logger::get_instance()->deleteAll();
 }
 
 function tttAllowedAdminAssetInclude()

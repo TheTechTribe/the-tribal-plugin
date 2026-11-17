@@ -1,0 +1,15 @@
+{
+    "name": "the-tech-tribe/the-tribal-plugin-tests",
+    "description": "Test tooling for The Tribal Plugin. Kept separate from the plugin's committed, shipped vendor/.",
+    "type": "project",
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "yoast/phpunit-polyfills": "^1.1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit -c phpunit.xml.dist"
+    }
+}

@@ -1,6 +1,6 @@
 <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#import');?>" method="post" class="dashboard-form-import">
 
-    <p>Your server will automatically check for new Blog Posts approximately every 24 hours. If you want to run a Manual Import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
+    <p>Your website will automatically check for new blog posts approximately every 24 hours. If you want to run a manual import, simply smash the <b>START MANUAL IMPORT</b> button below.</p>
     <div id="apiHelp" class="ttt-form-text">
         <div class="container-ttt-content">
             <div class="row">
@@ -8,11 +8,11 @@
                 <div class="col-md-8"><span class="last-check"><?php echo esc_attr($lastChecked && !empty($lastChecked)) ? date('d F Y h:i A', strtotime($lastChecked)) : '';?></span></div>
             </div>
             <div class="row">
-                <div class="col-md-3">Next Schedule Check: </div>
+                <div class="col-md-3">Next Scheduled Check: </div>
                 <div class="col-md-8"><?php echo esc_attr($nextScheduleCron);?> </div>
             </div>
             <div class="row">
-                <div class="col-md-3">Last Successfull Import: </div>
+                <div class="col-md-3">Last Successful Import: </div>
                 <div class="col-md-8"><span class="last-success-import"><?php echo esc_attr($lastDownload && !empty($lastDownload)) ? date('d F Y h:i A', strtotime($lastDownload)) : '';?></span></div>
             </div>
 

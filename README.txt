@@ -4,7 +4,7 @@ Donate link: thetechtribe.com
 Tags: techtribe, content, syndication
 Requires at least: 5.0
 Tested up to: 6.9.4
-Stable tag: 1.3.5
+Stable tag: 1.4.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -58,6 +58,35 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
 
 == Changelog ==
+= 1.4.0 - November 17, 2026 =
+* New Logs tab: view, download and clear a detailed activity log
+* Detailed logging of API key checks, portal requests, every imported post, category and image, cron runs and settings changes
+* PHP fatal errors during imports and dashboard actions are now logged with a stack trace
+* Log stored in a protected, randomly named file in uploads/ttt-logs/ with size-based rotation
+* API keys, tokens and email addresses are masked in the log; visitor IP addresses are not logged
+* Legacy log files from older versions are removed automatically
+* Removed the outdated log file warning from the dashboard
+* Switched to The Tech Tribe Portal API v2 (requires portal with v2/auth and content_format support); errors are now handled by HTTP status code
+* Clear messages for missing membership, unapproved domain, too many requests and service unavailable; the API key is only deactivated for key, membership or domain errors
+* Fixed a fatal error when the portal could not be reached or timed out
+* "Nothing to import" is now shown when there are no new posts
+* Fixed the empty source name in the "Republished with Permission" link and escaped its values
+* Images that fail to download are no longer saved as attachments; the original image URL is kept
+* Fixed scheduled post times on sites outside UTC (post_date_gmt)
+* Line breaks in imported content no longer glue words together
+* Posts are created with their content immediately, so an interrupted import never leaves an empty post
+* Imported content is filtered the same way for cron and manual imports: embeds (iframes) kept, scripts removed
+* Overlapping imports (cron and manual) are prevented; a stale lock from a crashed run expires after 15 minutes
+* Titles with special characters (&, <, quotes) are no longer imported twice
+* A category that cannot be created is skipped instead of stopping the import
+* Posts get the first administrator as author when no default author is set
+* Manual import reports success correctly, imported titles are escaped, and the result list renders properly
+* Next scheduled check is shown in the site timezone without changing PHP's timezone (fixes a notice on UTC-offset sites)
+* Deactivation only removes this plugin's options and keeps the options cache consistent
+* Added an automated test suite (tests/)
+* All messages rewritten in plain, friendly English with clear next steps; spelling fixes on labels
+* Manual import now explains when the page has expired or the user isn't an administrator, instead of failing silently
+
 = 1.3.5 - April 13, 2026 =
 * Security patch: fix sensitive data exposure vulnerability (CWE-201)
 * API key no longer rendered in HTML source

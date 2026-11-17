@@ -1,6 +1,6 @@
 <form action="<?php echo admin_url('admin.php?page=the-tribal-plugin#settings');?>" method="post" class="dashboard-form">
     <div class="mb-3">
-        <label class="form-label">Auto Or Manual publish of posts?</label>
+        <label class="form-label">Auto or manual publishing of posts?</label>
         <select class="form-select" aria-label="Default select example" name="ttt_publish_post">
             <option value="manual" <?php echo ($publishPosts=='manual') ? 'selected':'';?>>Manual</option>
             <option value="auto" <?php echo ($publishPosts=='auto') ? 'selected':'';?>>Auto</option>
@@ -10,13 +10,13 @@
                 <div class="row">
                     <div class="col-md-1">AUTO: </div>
                     <div class="col-md-11">
-                        All Posts will be automatically set to go LIVE on their Schedule dates. No user-interaction required
+                        All posts will automatically go live on their scheduled dates. Nothing for you to do.
                     </div>
                 </div>
                     <div class="row">
                     <div class="col-md-1">MANUAL: </div>
                     <div class="col-md-11">
-                        All Posts will be marked as DRAFTS ready for you to tweak before marking LIVE. User-interaction required.
+                        All posts will be saved as drafts, ready for you to tweak and publish when you're happy with them.
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
     </div>
     <hr>
     <div class="mb-3">
-        <label class="form-label">Select Default Author</label>
+        <label class="form-label">Select default author</label>
         <select class="form-select" aria-label="Default select author" name="ttt_post_author">
             <?php foreach($users as $user) : ?>
                 <option value="<?php echo esc_attr($user->ID);?>" <?php echo ($defaultAuthor == $user->ID) ? 'selected':'';?>>
@@ -34,7 +34,7 @@
         </select>
         <div id="apiHelp" class="ttt-form-text">
             <div class="container-ttt-content">
-                Choose the default Author you want all the automatically imported posts to be assigned against.
+                Choose the author you want all imported posts to be assigned to.
             </div>
         </div>
     </div>

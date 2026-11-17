@@ -1,0 +1,43 @@
+<?php
+/**
+ * PHPUnit bootstrap file.
+ *
+ * Uses the shared WordPress test library (bin/install-wp-tests.sh, default
+ * $TMPDIR/wordpress-tests-lib) and its own test database. Test tooling lives in
+ * tests/vendor so the plugin's shipped vendor/ is never touched.
+ *
+ * @package The_Tribal_Plugin
+ */
+
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
+
+if ( ! $_tests_dir ) {
+	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+}
+
+if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
+	$_phpunit_polyfills_path = getenv( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' );
+	define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $_phpunit_polyfills_path ? $_phpunit_polyfills_path : __DIR__ . '/vendor/yoast/phpunit-polyfills' );
+}
+
+if ( ! file_exists( "{$_tests_dir}/includes/functions.php" ) ) {
+	echo "Could not find {$_tests_dir}/includes/functions.php, have you run tests/bin/install-wp-tests.sh ?" . PHP_EOL; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	exit( 1 );
+}
+
+// Give access to tests_add_filter() function.
+require_once "{$_tests_dir}/includes/functions.php";
+
+/**
+ * Manually load the plugin being tested.
+ */
+function _manually_load_plugin() {
+	require dirname( __DIR__ ) . '/the-tribal-plugin.php';
+}
+
+tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+
+// Start up the WP testing environment.
+require "{$_tests_dir}/includes/bootstrap.php";
+
+require_once __DIR__ . '/TestCase.php';
