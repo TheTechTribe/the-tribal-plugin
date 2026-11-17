@@ -3,8 +3,8 @@
 WordPress integration tests (PHPUnit 9.6 + the WordPress test library).
 
 Test tooling lives in `tests/vendor` with its own `tests/composer.json`. The plugin's own
-`vendor/` is committed and shipped in the zip, so dev packages must never be installed there.
-`build-zip.sh` already excludes `tests/`.
+`vendor/` is not in Git: run `composer install` in the plugin root for local development.
+`release.sh` generates a production `vendor/` inside `dist/` and never ships `tests/`.
 
 ## Setup (once per machine)
 
