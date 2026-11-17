@@ -72,6 +72,8 @@ This plugin automatically pulls down those Blog Posts and publishes them on thei
 * "Nothing to import" is now shown when there are no new posts
 * Fixed the empty source name in the "Republished with Permission" link and escaped its values
 * Images that fail to download are no longer saved as attachments; the original image URL is kept
+* Image downloads allow 30 seconds and retry once on network or server errors; imports raise a short PHP time limit to 5 minutes where the host allows it
+* Imported images' media library title and embedded caption, title, credit and copyright show the site's own name instead of the content source's name
 * Fixed scheduled post times on sites outside UTC (post_date_gmt)
 * Line breaks in imported content no longer glue words together
 * Posts are created with their content immediately, so an interrupted import never leaves an empty post

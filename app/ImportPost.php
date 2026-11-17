@@ -46,6 +46,9 @@ class ImportPost
     /** A lock older than this (seconds) is from a crashed run and may be taken over. */
     const LOCK_TTL = 900;
 
+    /** Minimum PHP time limit (seconds) an import asks for when the host allows it. */
+    const MIN_TIME_LIMIT = 300;
+
     private $addedContentKses = false;
 
     public function import($args = [])
@@ -128,6 +131,14 @@ class ImportPost
         $logger->captureFatalErrors();
         $importStarted = microtime(true);
         $logger->info('Import started', $logger->environment());
+
+        // Image downloads may take up to 2 x 30s each; give the run room on hosts with a short
+        // PHP time limit. Never shorten it (0 means unlimited).
+        $timeLimit = (int) ini_get('max_execution_time');
+        if( $timeLimit > 0 && $timeLimit < self::MIN_TIME_LIMIT && function_exists('set_time_limit') ) {
+            $raised = @set_time_limit(self::MIN_TIME_LIMIT);
+            $logger->info('PHP time limit for this import', ['was' => $timeLimit, 'raised_to' => self::MIN_TIME_LIMIT, 'allowed_by_host' => (bool) $raised]);
+        }
 
         $statusVerbage = \TheTribalPlugin\StatusVerbage::get_instance()->get('import');
 

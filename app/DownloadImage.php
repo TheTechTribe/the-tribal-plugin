@@ -39,8 +39,14 @@ class DownloadImage
 		return self::$instance;
 	}
 
+	/** Seconds allowed per image request (WordPress' default of 5 is too tight for slow hosts). */
+	const TIMEOUT = 30;
+
+	/** Total tries per image for transient failures (transport errors, 5xx). */
+	const ATTEMPTS = 2;
+
 	public function __construct(){}
-    
+
     public function download( $args = [] )
     {
         require_once(ABSPATH . 'wp-admin/includes/image.php');
@@ -57,26 +63,36 @@ class DownloadImage
         $image = $image_url;
 
         $logger = Logger::get_instance();
-        $requestStarted = microtime(true);
 
-        $get = wp_remote_get( $image );
+        // Transport errors (DNS, timeouts) and 5xx are often transient: try once more.
+        // 4xx (e.g. 404) are permanent and not retried.
+        for ( $attempt = 1; $attempt <= self::ATTEMPTS; $attempt++ ) {
+            $requestStarted = microtime(true);
 
-        $type = wp_remote_retrieve_header( $get, 'content-type' );
-        $httpCode = wp_remote_retrieve_response_code( $get );
+            $get = wp_remote_get( $image, [ 'timeout' => self::TIMEOUT ] );
 
-        $logger->log(
-            ( is_wp_error( $get ) || 200 != $httpCode ) ? 'error' : 'info',
-            'Image download',
-            [
-                'url'          => $image,
-                'parent_post'  => $parent_id,
-                'duration_s'   => round(microtime(true) - $requestStarted, 2),
-                'http_code'    => $httpCode,
-                'content_type' => $type,
-                'bytes'        => strlen( wp_remote_retrieve_body( $get ) ),
-                'wp_error'     => is_wp_error( $get ) ? $get : null,
-            ]
-        );
+            $type = wp_remote_retrieve_header( $get, 'content-type' );
+            $httpCode = wp_remote_retrieve_response_code( $get );
+
+            $logger->log(
+                ( is_wp_error( $get ) || 200 != $httpCode ) ? 'error' : 'info',
+                'Image download',
+                [
+                    'url'          => $image,
+                    'parent_post'  => $parent_id,
+                    'attempt'      => $attempt,
+                    'duration_s'   => round(microtime(true) - $requestStarted, 2),
+                    'http_code'    => $httpCode,
+                    'content_type' => $type,
+                    'bytes'        => strlen( wp_remote_retrieve_body( $get ) ),
+                    'wp_error'     => is_wp_error( $get ) ? $get : null,
+                ]
+            );
+
+            if ( ! is_wp_error( $get ) && (int) $httpCode < 500 ) {
+                break;
+            }
+        }
 
         // Error pages (404 HTML etc.) must never become attachments; the caller keeps the remote URL.
         if ( is_wp_error( $get ) || 200 != $httpCode || 0 !== strpos( (string) $type, 'image/' ) ) {
@@ -92,7 +108,7 @@ class DownloadImage
         }
 
         $attachment = array(
-            'post_title'=> basename( $image ),
+            'post_title'=> $this->withSiteName( basename( $image ) ),
             'post_mime_type' => $type
         );
 
@@ -110,9 +126,27 @@ class DownloadImage
 
         $attach_data = wp_generate_attachment_metadata( $attach_id, $mirror['file'] );
 
+        // Caption, title, credit and copyright embedded in the image file.
+        if ( isset( $attach_data['image_meta'] ) && is_array( $attach_data['image_meta'] ) ) {
+            foreach ( [ 'caption', 'title', 'credit', 'copyright' ] as $field ) {
+                if ( isset( $attach_data['image_meta'][ $field ] ) ) {
+                    $attach_data['image_meta'][ $field ] = $this->withSiteName( $attach_data['image_meta'][ $field ] );
+                }
+            }
+        }
+
         wp_update_attachment_metadata( $attach_id, $attach_data );
 
         return $attach_id;
+    }
+
+    /**
+     * The content repository's name must never reach the member's media library: any form of it
+     * ("The Technology Press", "the-technology-press", "TheTechnologyPress") becomes the site's name.
+     */
+    private function withSiteName( $text )
+    {
+        return preg_replace( '/the[\s_-]*technology[\s_-]*press/i', get_bloginfo( 'name' ), (string) $text );
     }
 
 

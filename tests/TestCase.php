@@ -29,6 +29,12 @@ trait TTT_Fixtures {
 	/** @var int Requests to anything other than the portal or the fake image host. */
 	protected $unexpectedRequests = 0;
 
+	/** @var array Every image request: [ 'url', 'timeout' ]. */
+	protected $imageRequests = [];
+
+	/** @var array URL => number of transport failures (cURL 28) before the image host answers. */
+	protected $imageFailuresBeforeSuccess = [];
+
 	protected $uploadDir;
 	protected $adminId;
 
@@ -51,6 +57,8 @@ trait TTT_Fixtures {
 		$this->portalPosts        = [ 901 => $this->portalPost( 1 ) ];
 		$this->portalRequests     = [];
 		$this->unexpectedRequests = 0;
+		$this->imageRequests      = [];
+		$this->imageFailuresBeforeSuccess = [];
 		add_filter( 'pre_http_request', [ $this, 'fakeHttp' ], 10, 3 );
 	}
 
@@ -74,6 +82,16 @@ trait TTT_Fixtures {
 	/* ------------------------------------------------------------------ fake HTTP */
 
 	public function fakeHttp( $pre, $args, $url ) {
+		if ( 0 === strpos( $url, self::$PRESS . '/' ) ) {
+			$this->imageRequests[] = [ 'url' => $url, 'timeout' => $args['timeout'] ?? null ];
+		}
+		if ( ! empty( $this->imageFailuresBeforeSuccess[ $url ] ) ) {
+			$this->imageFailuresBeforeSuccess[ $url ]--;
+			return new WP_Error( 'http_request_failed', 'cURL error 28: Resolving timed out after 5000 milliseconds' );
+		}
+		if ( 0 === strpos( $url, self::$PRESS . '/server-error' ) ) {
+			return $this->response( 503, '<html>Busy</html>', 'text/html' );
+		}
 		if ( 0 === strpos( $url, self::$PRESS . '/img' ) ) {
 			return $this->response( 200, base64_decode( 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==' ), 'image/png' );
 		}
